@@ -14,5 +14,21 @@
         "vuelo": "A200",
         "horas_de_vuelo": 99,
         "tipo_de_licencia": "CPL"
+    },{
+        "nombre": "James Rodriguez",
+        "nacionalidad": "Argentina",
+        "numero_de_id": "P48495051",
+        "vuelo": "G1300",
+        "horas_de_vuelo": 1800,
+        "tipo_de_licencia": "ATPL"
+    },
+    {
+        "nombre": "Isabella Chavez",
+        "nacionalidad": "Colombia",
+        "numero_de_id": "P52535455",
+        "vuelo": "G1400",
+        "horas_de_vuelo": 600,
+        "tipo_de_licencia": "PPL"
     }
+
 ]

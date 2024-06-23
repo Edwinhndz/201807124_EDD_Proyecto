@@ -1,0 +1,130 @@
+[
+    {
+        "nombre": "John Doe",
+        "nacionalidad": "Estados Unidos",
+        "numero_de_id": "P12345678",
+        "vuelo": "A100",
+        "horas_de_vuelo": 600,
+        "tipo_de_licencia": "PPL"
+    },
+    {
+        "nombre": "Jane Smith",
+        "nacionalidad": "Reino Unido",
+        "numero_de_id": "p98765432",
+        "vuelo": "A200",
+        "horas_de_vuelo": 99,
+        "tipo_de_licencia": "CPL"
+    },
+    {
+        "nombre": "Michael Johnson",
+        "nacionalidad": "Canadá",
+        "numero_de_id": "P24681012",
+        "vuelo": "B300",
+        "horas_de_vuelo": 1200,
+        "tipo_de_licencia": "ATPL"
+    },
+    {
+        "nombre": "Sophia Garcia",
+        "nacionalidad": "España",
+        "numero_de_id": "P13579246",
+        "vuelo": "B400",
+        "horas_de_vuelo": 800,
+        "tipo_de_licencia": "PPL"
+    },
+    {
+        "nombre": "David Lee",
+        "nacionalidad": "Australia",
+        "numero_de_id": "P369121518",
+        "vuelo": "C500",
+        "horas_de_vuelo": 1500,
+        "tipo_de_licencia": "ATPL"
+    },
+    {
+        "nombre": "Emma Brown",
+        "nacionalidad": "Francia",
+        "numero_de_id": "P1514131719",
+        "vuelo": "C600",
+        "horas_de_vuelo": 300,
+        "tipo_de_licencia": "CPL"
+    },
+    {
+        "nombre": "Daniel Martinez",
+        "nacionalidad": "México",
+        "numero_de_id": "P20222426",
+        "vuelo": "D700",
+        "horas_de_vuelo": 700,
+        "tipo_de_licencia": "PPL"
+    },
+    {
+        "nombre": "Olivia Wilson",
+        "nacionalidad": "Alemania",
+        "numero_de_id": "P28293031",
+        "vuelo": "D800",
+        "horas_de_vuelo": 1100,
+        "tipo_de_licencia": "ATPL"
+    },
+    {
+        "nombre": "Liam Moore",
+        "nacionalidad": "Irlanda",
+        "numero_de_id": "P32333435",
+        "vuelo": "E900",
+        "horas_de_vuelo": 500,
+        "tipo_de_licencia": "CPL"
+    },
+    {
+        "nombre": "Ava Taylor",
+        "nacionalidad": "Italia",
+        "numero_de_id": "P36373839",
+        "vuelo": "E1000",
+        "horas_de_vuelo": 900,
+        "tipo_de_licencia": "PPL"
+    },
+    {
+        "nombre": "Noah Clark",
+        "nacionalidad": "Suecia",
+        "numero_de_id": "P40414243",
+        "vuelo": "F1100",
+        "horas_de_vuelo": 1300,
+        "tipo_de_licencia": "ATPL"
+    },
+    {
+        "nombre": "Mia Anderson",
+        "nacionalidad": "Noruega",
+        "numero_de_id": "P44454647",
+        "vuelo": "F1200",
+        "horas_de_vuelo": 200,
+        "tipo_de_licencia": "CPL"
+    },
+    {
+        "nombre": "James Rodriguez",
+        "nacionalidad": "Argentina",
+        "numero_de_id": "P48495051",
+        "vuelo": "G1300",
+        "horas_de_vuelo": 1800,
+        "tipo_de_licencia": "ATPL"
+    },
+    {
+        "nombre": "Isabella Chavez",
+        "nacionalidad": "Colombia",
+        "numero_de_id": "P52535455",
+        "vuelo": "G1400",
+        "horas_de_vuelo": 600,
+        "tipo_de_licencia": "PPL"
+    },
+    {
+        "nombre": "William Hernandez",
+        "nacionalidad": "Chile",
+        "numero_de_id": "P56575859",
+        "vuelo": "H1500",
+        "horas_de_vuelo": 1000,
+        "tipo_de_licencia": "ATPL"
+    },
+    {
+        "nombre": "Charlotte Smith",
+        "nacionalidad": "Canadá",
+        "numero_de_id": "P60616263",
+        "vuelo": "H1600",
+        "horas_de_vuelo": 400,
+        "tipo_de_licencia": "CPL"
+    }
+]

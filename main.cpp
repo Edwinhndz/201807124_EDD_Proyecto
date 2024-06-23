@@ -7,12 +7,13 @@
 #include <cstdlib>
 #include "json.hpp"
 #include "ListaDobleC.h"
+#include "ArbolBB.h"
 
 using namespace std;
 
 using json = nlohmann::json;
 
-void CargaPilotos(string pilotoss)
+void CargaPilotos(string pilotoss, ArbolBB *arbol)
 {
 
     // Abrir el archivo JSON
@@ -47,6 +48,8 @@ void CargaPilotos(string pilotoss)
         string g = piloto["tipo_de_licencia"];
         cout << "-------------------------" << conteo << endl;
         conteo++;
+
+        arbol->insertar(e, a, b, c, d, g);
     }
 };
 
@@ -91,7 +94,12 @@ void CargaAviones(string avionesss)
 
 int main()
 {
+    // estructuras
+    ArbolBB *arbol = new ArbolBB();
+    arbol->SetRaiz();
+
     int choice;
+    int choiceRecorridos;
 
     do
     {
@@ -118,7 +126,8 @@ int main()
             break;
         case 2:
             // Code for option 2
-            CargaPilotos("pilotos2.json");
+
+            CargaPilotos("pilotos.json", arbol);
             break;
         case 3:
             // Code for option 3
@@ -128,12 +137,48 @@ int main()
             break;
         case 5:
             // Code for option 5
+
+            cout << "Recorridos:" << endl;
+            cout << "1. PreOrden" << endl;
+            cout << "2. InOrden" << endl;
+            cout << "3. PostOrden" << endl;
+            cout << "Eliga una opcion:  (1-3): ";
+            cin >> choiceRecorridos;
+
+            switch (choiceRecorridos)
+            {
+            case 1:
+                cout << "Recorrido PreOrden" << endl;
+                cout << endl;
+                arbol->RecorridoPre();
+                cout << endl;
+                break;
+            case 2:
+                cout << "Recorrido InOrden" << endl;
+                cout << endl;
+                arbol->RecorridoIn();
+                cout << endl;
+                break;
+            case 3:
+                cout << "Recorrido PostOrden" << endl;
+                cout << endl;
+                arbol->RecorridoPost();
+                cout << endl;
+                /* code */
+                break;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+                break;
+            }
             break;
+            
         case 6:
             // Code for option 6
             break;
         case 7:
             // Code for option 7
+            cout << "Generando Reportes " << endl;
+            arbol->generarReporte();
             break;
         case 8:
             cout << "Goodbye!" << endl;
