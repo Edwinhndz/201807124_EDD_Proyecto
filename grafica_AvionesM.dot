@@ -1,0 +1,30 @@
+digraph G { 
+rankdir = LR;
+label="Lista Circular Doblemente enlazada";bgcolor=grey 
+subgraph cluster_top_floor{
+bgcolor=wheat; 
+label="Aviones en Mantenimiento";
+nodo0[ shape=octagon, fontcolor=aliceblue , style=filled,color=teal, label="Registro: N12345
+Estado: Mantenimiento
+Vuelo:A100
+Modelo:Boeing 737"]
+nodo1[ shape=octagon, fontcolor=aliceblue , style=filled,color=teal, label="Registro: N67890
+Estado: Mantenimiento
+Vuelo:B200
+Modelo:Boeing 787"]
+nodo2[ shape=octagon, fontcolor=aliceblue , style=filled,color=teal, label="Registro: N13579
+Estado: Mantenimiento
+Vuelo:D400
+Modelo:Embraer E190"]
+nodo3[ shape=octagon, fontcolor=aliceblue , style=filled,color=teal, label="Registro: N80246
+Estado: Mantenimiento
+Vuelo:E500
+Modelo:Bombardier CRJ900"]
+nodo0 -> nodo1 -> nodo2 -> nodo3;
+nodo3
+nodo3 -> nodo2 -> nodo1 -> nodo0;
+nodo0 -> nodo3;
+nodo3 -> nodo0;
+
+}
+}

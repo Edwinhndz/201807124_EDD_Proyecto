@@ -6,7 +6,7 @@
         "capacidad": 180,
         "aerolinea": "Airlinex",
         "ciudad_destino": "Madrid",
-        "estado": "Disponible"
+        "estado": "Mantenimiento"
     },
     {
         "vuelo": "A102",
@@ -33,7 +33,7 @@
         "capacidad": 300,
         "aerolinea": "SkyWings",
         "ciudad_destino": "Sevilla",
-        "estado": "Mantenimiento"
+        "estado": "Disponible"
     },
     {
         "vuelo": "D400",
@@ -52,5 +52,24 @@
         "aerolinea": "SwiftAir",
         "ciudad_destino": "Bilbao",
         "estado": "Mantenimiento"
+    },
+    {
+        "vuelo": "F600",
+        "numero_de_registro": "N97531",
+        "modelo": "Airbus A380",
+        "capacidad": 500,
+        "aerolinea": "MegaAir",
+        "ciudad_destino": "Paris",
+        "estado": "Disponible"
+    },
+    {
+        "vuelo": "G700",
+        "numero_de_registro": "N86420",
+        "modelo": "Boeing 777",
+        "capacidad": 350,
+        "aerolinea": "GlobalFly",
+        "ciudad_destino": "London",
+        "estado": "Disponible"
     }
+    
 ]

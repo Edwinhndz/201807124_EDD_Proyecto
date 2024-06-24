@@ -14,6 +14,7 @@ private:
     string tipo_de_licencia;
     Nodo* izq; //Hijo izquierdo
     Nodo* der; //Hijo derecho
+    Nodo* padre; //Padre
 public:
     Nodo();
     //getters y setters
@@ -35,6 +36,8 @@ public:
     Nodo* getIzq();
     void setDer(Nodo* der);
     Nodo* getDer();
+    void setPadre(Nodo* padre);
+    Nodo* getPadre();
     ~Nodo();
 };
 
@@ -47,6 +50,16 @@ Nodo::Nodo()
 void Nodo::setHoras(int horas)
 {
     this->horas = horas;
+}
+
+void Nodo::setPadre(Nodo* padre)
+{
+    this->padre = padre;
+}
+
+Nodo* Nodo::getPadre()
+{
+    return this->padre;
 }
 
 void Nodo::setIzq(Nodo* izq)

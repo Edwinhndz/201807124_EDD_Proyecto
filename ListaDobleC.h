@@ -15,8 +15,7 @@ public:
     ListaCircular(/* args */);
     bool estaVacia();
     void insertarInicio(int dato);
-    void insertarFinal(int dato, string name, string reg, string mod, string fab, int anio, int cap, 
-    int peso, string linea, string estado);
+    void insertarFinal(int dato, string vuelo, string reg, string mod,string linea, string destino ,string estado);
     void eliminarInicio();
     void eliminarFinal();
     void visualizarLista();
@@ -62,8 +61,7 @@ void ListaCircular::insertarInicio(int dato)
     
 }
 
-void ListaCircular::insertarFinal(int pos, string vuelo, string reg, string mod, string fab, int anio, int cap, 
-int peso, string linea, string estado)
+void ListaCircular::insertarFinal(int pos, string vuelo, string reg, string mod, string aerlinea ,string destino, string estado)
 {
 
     NodoA *nuevo = new NodoA(pos);
@@ -71,11 +69,8 @@ int peso, string linea, string estado)
     nuevo->setRegistro(reg);
     nuevo->setVuelo(vuelo);
     nuevo->setModelo(mod);
-    nuevo->setFabricante(fab);
-    nuevo->setAnio(anio);
-    nuevo->setCapacidad(cap);
-    nuevo->setPesoMax(peso);
-    nuevo->setAerolinea(linea);
+    nuevo->setAerolinea(aerlinea);
+    nuevo->setDestino(destino);
     nuevo->setEstado(estado);
 
 
@@ -400,7 +395,7 @@ void ListaCircular::generarReporte2(){
     {
         ofstream archivo; //
         archivo.open("grafica_AvionesM.dot", ios::out);
-        archivo << "digraph G { " << endl << "rankdir = LR;" << endl << "label=\"Lista Circular\";" << "bgcolor=grey "<< endl 
+        archivo << "digraph G { " << endl << "rankdir = LR;" << endl << "label=\"Lista Circular Doblemente enlazada\";" << "bgcolor=grey "<< endl 
         <<"subgraph cluster_top_floor{" << endl << "bgcolor=wheat; " << endl;
         archivo << "label=\"Aviones en Mantenimiento\";"<< endl;
 
@@ -409,28 +404,55 @@ void ListaCircular::generarReporte2(){
         int conteo = 0;
         do
         {   
-            //cout << "do 3" << endl;
             nodoDato = actual->getRegistro();
             archivo <<"nodo"<< conteo << "[ shape=octagon, fontcolor=aliceblue , style=filled,color=teal, label=\"Registro: " <<nodoDato 
-            << "\nEstado: " << actual->getEstado() << "\nVuelo:" << actual->getVuelo() << "\nModelo:" << actual->getModelo() 
-            << "\nAnio: " << actual->getAnio() << "\"]" <<endl;
+            << "\nEstado: " << actual->getEstado() << "\nVuelo:" << actual->getVuelo() << "\nModelo:" << actual->getModelo() << "\"]" <<endl;
             //archivo << " -> ";
             actual = actual->getSiguiente();
             
             conteo++;
         } while (conteo != ListaCircular::size);
 
-        int size = 0;
+       int sizee = 0;
+
+        //primeros enlazados ->
+         do{
+
+            //cout << "do2 " << endl;
+            if(sizee +1 == size){
+                archivo << "nodo" << sizee;
+            }else{
+                archivo << "nodo" << sizee << " -> ";
+            }
+            
+            sizee++;
+        }while(sizee != size);
+
+
+
+        int sizee2 = size-1;
+
+
+        archivo <<";" << endl;
+
+        archivo << "nodo" << (size-1) << endl;
+
+        //segundos enlazados <-
         do{
-            //cout << "do 4" << endl;
-            archivo << "nodo" << size << " -> ";
 
-            size++;
+            //cout << "do2 " << endl;
+            if(sizee-1 == 0){
+                archivo << "nodo" << (sizee-1) << ";" <<endl;
+            }else{
+                archivo << "nodo" << (sizee-1) << " -> ";
+            }
+            sizee--;
+        }while(sizee != 0);
+        archivo << "nodo0 -> " << "nodo" << (size-1) << ";" << endl;
+        archivo << "nodo" << (size-1)<< " -> nodo0" << ";" << endl;
 
-        }while(size != ListaCircular::size);
-
-        archivo << "nodo0";
-        archivo << ";" << endl <<"}"<< endl <<"}";
+        
+        archivo << endl <<"}"<< endl <<"}";
         archivo.close();
         system("dot -Tpng grafica_AvionesM.dot -o grafica_AvionesM.png");
         system("open grafica_AvionesM.png");

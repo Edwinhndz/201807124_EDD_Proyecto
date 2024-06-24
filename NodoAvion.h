@@ -10,7 +10,7 @@ private:
     string vuelo;
     string registro;
     string modelo;
-    string fabricante;
+    string destino;
     int anio;
     int capacidad;
     int pesoMax;
@@ -36,8 +36,8 @@ public:
     void setRegistro(string registro);
     string getModelo();
     void setModelo(string modelo);
-    string getFabricante();
-    void setFabricante(string fabricante);
+    string getDestino();
+    void setDestino(string destino);
     int getAnio();
     void setAnio(int anio);
     int getCapacidad();
@@ -91,12 +91,12 @@ void NodoA::setModelo(string modelo){
     this->modelo = modelo;
 }
 
-string NodoA::getFabricante(){
-    return this->fabricante;
+string NodoA::getDestino(){
+    return this->destino;
 }
 
-void NodoA::setFabricante(string fabricante){
-    this->fabricante = fabricante;
+void NodoA::setDestino(string destino){
+    this->destino = destino;
 }
 
 int NodoA::getAnio(){

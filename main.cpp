@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <cstdlib>
+#include <cstring>
 #include "json.hpp"
 #include "ListaDobleC.h"
 #include "ArbolBB.h"
@@ -49,11 +50,15 @@ void CargaPilotos(string pilotoss, ArbolBB *arbol)
         cout << "-------------------------" << conteo << endl;
         conteo++;
 
-        arbol->insertar(e, a, b, c, d, g);
+        arbol->insertar(e, a, b, c, d, g, nullptr);
     }
 };
 
-void CargaAviones(string avionesss)
+void Mantenimineto(string vuelo, string registro, string modelo, string aerolinea, string destino, string estado, ListaCircular *lista){
+    lista->insertarFinal(0,vuelo, registro, modelo, aerolinea, destino, estado);
+}
+
+void CargaAviones(string avionesss, ListaCircular *lista)
 
 // void IngresoEquipaje();
 {
@@ -88,19 +93,71 @@ void CargaAviones(string avionesss)
         cout << "Estado: " << avion["estado"] << endl;
         string i = avion["estado"];
         cout << "-------------------------" << conteo << endl;
+
+        if(i == "Mantenimiento"){
+            Mantenimineto(a, b, c, h, d, i, lista);
+        }else if(i == "Disponible"){
+            cout << "Disponible" << endl;
+        }
+
         conteo++;
     }
 };
+
+void Disponibles(){
+
+}
+
+
+
+void CargaRutas(){
+    ifstream archivo("city.txt");
+
+    if (!archivo.is_open())
+    {
+        cout << "Error al abrir el archivo de commandos." << endl;
+        return;
+    }
+
+    string linea;
+
+    int i = 1;
+    while (getline(archivo, linea))
+    {
+        cout << "-------------------------" << i << endl;
+        cout << linea << endl;
+        cout << "-------------------------" << i << endl;
+        i++;
+         if(linea == ""){
+            cout << "linea vacia:"<< linea <<";" << endl;
+        }
+        else if (linea != "")
+        {
+            stringstream split(linea);
+            string ciudad1, ciudad2, km;
+            cout << "-------------------------" << endl;
+            getline(split, ciudad1, '/');
+            cout << "Ciudad Origen: " << ciudad1 << "\n";
+            getline(split, ciudad2, '/');
+            cout << "Ciudad Destino: " << ciudad2 << "\n";
+            getline(split, km, ',');
+            km.pop_back();
+            cout << "Kmts: |" << km << "|" << "\n";
+        }
+
+    }
+}
 
 int main()
 {
     // estructuras
     ArbolBB *arbol = new ArbolBB();
     arbol->SetRaiz();
+    ListaCircular *lista = new ListaCircular();
 
     int choice;
     int choiceRecorridos;
-
+    system("color 0b");
     do
     {
         cout << "-----------------------------------------" << endl;
@@ -122,7 +179,7 @@ int main()
         {
         case 1:
             // Code for option 1
-            CargaAviones("aviones2.json");
+            CargaAviones("aviones3.json", lista);
             break;
         case 2:
             // Code for option 2
@@ -131,6 +188,7 @@ int main()
             break;
         case 3:
             // Code for option 3
+            CargaRutas();
             break;
         case 4:
             // Code for option 4
@@ -171,7 +229,7 @@ int main()
                 break;
             }
             break;
-            
+
         case 6:
             // Code for option 6
             break;
@@ -179,6 +237,7 @@ int main()
             // Code for option 7
             cout << "Generando Reportes " << endl;
             arbol->generarReporte();
+            lista->generarReporte2();
             break;
         case 8:
             cout << "Goodbye!" << endl;

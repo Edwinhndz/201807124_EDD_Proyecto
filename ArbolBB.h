@@ -16,8 +16,8 @@ public:
     int recorrido = 0;
     ArbolBB(/* args */);
     bool estaVacio();
-    void insertar(int horas, string name, string nacion, string id, string vuelo, string licencia);
-    Nodo *insertarNodo(Nodo *nodoPtr, int horas, string name, string nacion, string id, string vuelo, string licencia);
+    void insertar(int horas, string name, string nacion, string id, string vuelo, string licencia, Nodo *padre);
+    Nodo *insertarNodo(Nodo *nodoPtr, int horas, string name, string nacion, string id, string vuelo, string licencia, Nodo *padre);
     void buscar(int dato);
     int buscarNodo(int dato, Nodo *nodoPtr);
 
@@ -28,10 +28,11 @@ public:
     void RecorridoPost();
     void RecorridoPost(Nodo *nodoPtr);
 
-
     void generarReporte();
     void imprimirNodo(Nodo *nodoPtr);
     void imprimirNodoId(Nodo *nodoPtr);
+    void eliminarNodo(Nodo *nodoPtr, string id, int horas);
+    void eliminar(Nodo *nodoPtr);
 
     void SetRaiz();
     Nodo *GetRaiz();
@@ -48,13 +49,13 @@ bool ArbolBB::estaVacio()
     return (raiz == nullptr);
 }
 
-void ArbolBB::insertar(int horas, string name, string nacion, string id, string vuelo, string licencia)
+void ArbolBB::insertar(int horas, string name, string nacion, string id, string vuelo, string licencia, Nodo *padre)
 {
     cout << "Horas en insertar: " << horas << "\n";
-    raiz = insertarNodo(raiz, horas, name, nacion, id, vuelo, licencia);
+    raiz = insertarNodo(raiz, horas, name, nacion, id, vuelo, licencia, padre);
 }
 
-Nodo *ArbolBB::insertarNodo(Nodo *nodoPtr, int horas, string name, string nacion, string id, string vuelo, string licencia)
+Nodo *ArbolBB::insertarNodo(Nodo *nodoPtr, int horas, string name, string nacion, string id, string vuelo, string licencia, Nodo *padre)
 {
 
     if (nodoPtr == nullptr)
@@ -68,22 +69,23 @@ Nodo *ArbolBB::insertarNodo(Nodo *nodoPtr, int horas, string name, string nacion
         nuevo->setNumero_de_id(id);
         nuevo->setVuelo(vuelo);
         nuevo->setTipo_de_licencia(licencia);
+        nuevo->setPadre(padre);
 
         cout << "insertando raiz con: " << horas << "\n";
     }
     else if (horas < nodoPtr->getHoras())
     {
-        nodoPtr->setIzq(insertarNodo(nodoPtr->getIzq(), horas, name, nacion, id, vuelo, licencia));
+        nodoPtr->setIzq(insertarNodo(nodoPtr->getIzq(), horas, name, nacion, id, vuelo, licencia, padre));
         cout << "insertando izq con: " << horas << "\n";
     }
     else if (horas > nodoPtr->getHoras())
     {
-        nodoPtr->setDer(insertarNodo(nodoPtr->getDer(), horas, name, nacion, id, vuelo, licencia));
+        nodoPtr->setDer(insertarNodo(nodoPtr->getDer(), horas, name, nacion, id, vuelo, licencia, padre));
         cout << "insertando der con: " << horas << "\n";
     }
     else if (horas == nodoPtr->getHoras())
     {
-        nodoPtr->setDer(insertarNodo(nodoPtr->getDer(), horas, name, nacion, id, vuelo, licencia));
+        nodoPtr->setDer(insertarNodo(nodoPtr->getDer(), horas, name, nacion, id, vuelo, licencia, padre));
         cout << "insertando der igual raiz con: " << horas << "\n";
     }
     else
@@ -135,7 +137,6 @@ void ArbolBB::RecorridoPre(Nodo *nodoPtr)
         cout << "Nombre: " << nodoPtr->getNombre() << ", Horas de vuelo: " << nodoPtr->getHoras() << endl;
         RecorridoPre(nodoPtr->getIzq());
         RecorridoPre(nodoPtr->getDer());
-
     }
 }
 
@@ -147,13 +148,16 @@ void ArbolBB::RecorridoIn()
 void ArbolBB::RecorridoIn(Nodo *nodoPtr)
 {
 
-    if(nodoPtr == nullptr){
+    if (nodoPtr == nullptr)
+    {
         return;
-    }else{
+    }
+    else
+    {
         // INORDEN
         RecorridoIn(nodoPtr->getIzq());
         cout << "Nombre: " << nodoPtr->getNombre() << ", Horas de vuelo: " << nodoPtr->getHoras() << endl;
-        RecorridoIn(nodoPtr->getDer()); 
+        RecorridoIn(nodoPtr->getDer());
     }
 }
 
@@ -276,6 +280,30 @@ void ArbolBB::imprimirNodoId(Nodo *nodoPtr)
         archivo << ";\n";
     }
     imprimirNodo(nodoPtr->getDer());
+}
+
+void ArbolBB::eliminarNodo(Nodo *arbol, string id, int horas)
+{
+    if (arbol == nullptr)
+    {
+        return;
+    }
+    else if (horas < arbol->getHoras())
+    {
+        eliminarNodo(arbol->getIzq(), id, horas);
+    }
+    else if (horas > arbol->getHoras())
+    {
+        eliminarNodo(arbol->getDer(), id, horas);   
+    }else if(horas == arbol->getHoras()){
+        eliminarNodo(arbol->getDer(), id, horas);
+    }else{
+        eliminar(arbol);
+    }
+}
+
+void ArbolBB::eliminar(Nodo *arbol){
+
 }
 
 void ArbolBB::SetRaiz()
