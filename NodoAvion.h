@@ -32,7 +32,7 @@ public:
 
     string getVuelo();
     void setVuelo(string vuelo);
-    string getRegistro();
+    string getRegistro() const {return registro;}
     void setRegistro(string registro);
     string getModelo();
     void setModelo(string modelo);
@@ -48,6 +48,17 @@ public:
     void setAerolinea(string linea);
     string getEstado();
     void setEstado(string estado);
+
+    void mostrarInfo() const;
+
+    NodoA() = default;
+    NodoA(string vuelo, string numero_de_registro, string modelo, int capacidad, string aerolinea,
+         string ciudad_destino, string estado);
+
+
+    bool operator<(const NodoA& other) const;// Comparador
+    bool operator>(const NodoA& other) const;// Comparador
+    bool operator==(const NodoA& other) const;// Comparador
 
     ~NodoA();
 };
@@ -75,9 +86,9 @@ void NodoA::setVuelo(string vuelo){
     this->vuelo = vuelo;
 }
 
-string NodoA::getRegistro(){
-    return this->registro;
-}
+// string NodoA::getRegistro(){
+//     return this->registro;
+// }
 
 void NodoA::setRegistro(string registro){
     this->registro = registro;
@@ -156,6 +167,36 @@ void NodoA::setAnterior(NodoA *anterior){
     this->anterior = anterior;
 }
 
+NodoA::NodoA(string vuelo, string numero_de_registro, string modelo, int capacidad, string aerolinea,
+         string ciudad_destino, string estado)
+    : vuelo(vuelo), registro(numero_de_registro), modelo(modelo), 
+    capacidad(capacidad), aerolinea(aerolinea), destino(ciudad_destino) ,estado(estado) {
+    this->anterior = nullptr;
+    this->siguiente = nullptr;
+}
+
+void NodoA::mostrarInfo() const {
+    cout << "-------------------------" << endl;
+    cout << "Vuelo: " << vuelo << endl;
+    cout << "Numero de Registro: " << registro << endl;
+    cout << "Modelo: " << modelo << endl;
+    cout << "Capacidad: " << capacidad << endl;
+    cout << "Aerolinea: " << aerolinea << endl;
+    cout << "Ciudad Destino: " << destino << endl;
+    cout << "Estado: " << estado << endl;
+    cout << "-------------------------" << endl;
+}
+
+bool NodoA::operator<(const NodoA& other) const {
+    
+    return stoi(this->getRegistro()) < stoi(other.getRegistro());
+}
+bool NodoA::operator>(const NodoA& other) const {
+    return this->getRegistro() > other.getRegistro();
+}
+bool NodoA::operator==(const NodoA& other) const {
+    return this->getRegistro() == other.getRegistro();
+}
 
 
 

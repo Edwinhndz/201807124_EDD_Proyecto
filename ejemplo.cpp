@@ -9,19 +9,21 @@
 #include <iostream>
 using namespace std;
 
-struct nodo{
-            char nombre;//nombre del vertice o nodo
-            struct nodo *sgte;
-            struct arista *ady;//puntero hacia la primera arista del nodo
-            };
-struct arista{
-              struct nodo *destino;//puntero al nodo de llegada
-              struct arista *sgte;
-              };
-typedef struct nodo *Tnodo;//  Tipo Nodo
-typedef struct arista *Tarista; //Tipo Arista
+struct nodo
+{
+    char nombre; // nombre del vertice o nodo
+    struct nodo *sgte;
+    struct arista *ady; // puntero hacia la primera arista del nodo
+};
+struct arista
+{
+    struct nodo *destino; // puntero al nodo de llegada
+    struct arista *sgte;
+};
+typedef struct nodo *Tnodo;     //  Tipo Nodo
+typedef struct arista *Tarista; // Tipo Arista
 
-Tnodo p;//puntero cabeza
+Tnodo p; // puntero cabeza
 
 void menu();
 void insertar_nodo();
@@ -33,46 +35,50 @@ void eliminar_arista();
 void mostrar_grafo();
 void mostrar_aristas();
 
-
 /*                        Funcion Principal
 ---------------------------------------------------------------------*/
 int main(void)
-{   p=NULL;
-    int op;     // opcion del menu
-
+{
+    p = NULL;
+    int op; // opcion del menu
 
     system("color 0b");
 
     do
     {
         menu();
-        cin>>op;
+        cin >> op;
 
-        switch(op)
+        switch (op)
         {
-            case 1:
-                    insertar_nodo();
-                    break;
-            case 2: insertar_arista();
-                    break;
-            case 3: eliminar_nodo();
-                    break;
-            case 4: eliminar_arista();
-                    break;
-            case 5: mostrar_grafo();
-                    break;
-            case 6: mostrar_aristas();
-                    break;
+        case 1:
+            insertar_nodo();
+            break;
+        case 2:
+            insertar_arista();
+            break;
+        case 3:
+            eliminar_nodo();
+            break;
+        case 4:
+            eliminar_arista();
+            break;
+        case 5:
+            mostrar_grafo();
+            break;
+        case 6:
+            mostrar_aristas();
+            break;
 
-            default: cout<<"OPCION NO VALIDA...!!!";
-                     break;
-
-
+        default:
+            cout << "OPCION NO VALIDA...!!!";
+            break;
         }
 
-        cout<<endl<<endl;
+        cout << endl
+             << endl;
 
-    }while(op!=7);
+    } while (op != 7);
     return 0;
 }
 
@@ -80,45 +86,44 @@ int main(void)
 ---------------------------------------------------------------------*/
 void menu()
 {
-    cout<<"\n\tREPRESENTACION DE GRAFOS DIRIGIDOS\n\n";
-    cout<<" 1. INSERTAR UN NODO                 "<<endl;
-    cout<<" 2. INSERTAR UNA ARISTA              "<<endl;
-    cout<<" 3. ELIMINAR UN NODO                 "<<endl;
-    cout<<" 4. ELIMINAR UNA ARISTA              "<<endl;
-    cout<<" 5. MOSTRAR  GRAFO                   "<<endl;
-    cout<<" 6. MOSTRAR ARISTAS DE UN NODO       "<<endl;
-    cout<<" 7. SALIR                            "<<endl;
+    cout << "\n\tREPRESENTACION DE GRAFOS DIRIGIDOS\n\n";
+    cout << " 1. INSERTAR UN NODO                 " << endl;
+    cout << " 2. INSERTAR UNA ARISTA              " << endl;
+    cout << " 3. ELIMINAR UN NODO                 " << endl;
+    cout << " 4. ELIMINAR UNA ARISTA              " << endl;
+    cout << " 5. MOSTRAR  GRAFO                   " << endl;
+    cout << " 6. MOSTRAR ARISTAS DE UN NODO       " << endl;
+    cout << " 7. SALIR                            " << endl;
 
-    cout<<"\n INGRESE OPCION: ";
+    cout << "\n INGRESE OPCION: ";
 }
 
 /*                      INSERTAR NODO AL GRAFO
 ---------------------------------------------------------------------*/
 void insertar_nodo()
 {
-    Tnodo t,nuevo=new struct nodo;
-    cout<<"INGRESE VARIABLE:";
-    cin>>nuevo->nombre;
+    Tnodo t, nuevo = new struct nodo;
+    cout << "INGRESE VARIABLE:";
+    cin >> nuevo->nombre;
     nuevo->sgte = NULL;
-    nuevo->ady=NULL;
+    nuevo->ady = NULL;
 
-    if(p==NULL)
-     {
+    if (p == NULL)
+    {
         p = nuevo;
-        cout<<"PRIMER NODO...!!!";
-      }
+        cout << "PRIMER NODO...!!!";
+    }
     else
-     {
+    {
         t = p;
-        while(t->sgte!=NULL)
-         {
+        while (t->sgte != NULL)
+        {
             t = t->sgte;
-          }
+        }
         t->sgte = nuevo;
-        cout<<"NODO INGRESADO...!!!";
-      }
-
- }
+        cout << "NODO INGRESADO...!!!";
+    }
+}
 
 /*                      AGREGAR ARISTA
     funcion que utilizada para agregar la arista a dos nodos
@@ -126,56 +131,58 @@ void insertar_nodo()
 void agrega_arista(Tnodo &aux, Tnodo &aux2, Tarista &nuevo)
 {
     Tarista q;
-    if(aux->ady==NULL)
-    {   aux->ady=nuevo;
-        nuevo->destino=aux2;
-        cout<<"PRIMERA ARISTA....!";
+    if (aux->ady == NULL)
+    {
+        aux->ady = nuevo;
+        nuevo->destino = aux2;
+        cout << "PRIMERA ARISTA....!";
     }
     else
-    {   q=aux->ady;
-        while(q->sgte!=NULL)
-            q=q->sgte;
-        nuevo->destino=aux2;
-        q->sgte=nuevo;
-        cout<<"ARISTA AGREGADA...!!!!";
+    {
+        q = aux->ady;
+        while (q->sgte != NULL)
+            q = q->sgte;
+        nuevo->destino = aux2;
+        q->sgte = nuevo;
+        cout << "ARISTA AGREGADA...!!!!";
     }
-
 }
 /*                      INSERTAR ARISTA
     funcion que busca las posiciones de memoria de los nodos
     y hace llamado a agregar_arista para insertar la arista
 ---------------------------------------------------------------------*/
 void insertar_arista()
-{   char ini, fin;
-    Tarista nuevo=new struct arista;
+{
+    char ini, fin;
+    Tarista nuevo = new struct arista;
     Tnodo aux, aux2;
 
-    if(p==NULL)
-     {
-         cout<<"GRAFO VACIO...!!!!";
-         return;
-     }
-    nuevo->sgte=NULL;
-    cout<<"INGRESE NODO DE INICIO:";
-    cin>>ini;
-    cout<<"INGRESE NODO FINAL:";
-    cin>>fin;
-    aux=p;
-    aux2=p;
-    while(aux2!=NULL)
+    if (p == NULL)
     {
-        if(aux2->nombre==fin)
+        cout << "GRAFO VACIO...!!!!";
+        return;
+    }
+    nuevo->sgte = NULL;
+    cout << "INGRESE NODO DE INICIO:";
+    cin >> ini;
+    cout << "INGRESE NODO FINAL:";
+    cin >> fin;
+    aux = p;
+    aux2 = p;
+    while (aux2 != NULL)
+    {
+        if (aux2->nombre == fin)
         {
             break;
         }
 
-        aux2=aux2->sgte;
+        aux2 = aux2->sgte;
     }
-    while(aux!=NULL)
+    while (aux != NULL)
     {
-        if(aux->nombre==ini)
+        if (aux->nombre == ini)
         {
-            agrega_arista(aux,aux2, nuevo);
+            agrega_arista(aux, aux2, nuevo);
             return;
         }
 
@@ -189,13 +196,13 @@ void insertar_arista()
 ---------------------------------------------------------------------*/
 void vaciar_aristas(Tnodo &aux)
 {
-    Tarista q,r;
-    q=aux->ady;
-    while(q->sgte!=NULL)
+    Tarista q, r;
+    q = aux->ady;
+    while (q->sgte != NULL)
     {
-        r=q;
-        q=q->sgte;
-        delete(r);
+        r = q;
+        q = q->sgte;
+        delete (r);
     }
 }
 /*                      ELIMINAR NODO
@@ -204,51 +211,48 @@ void vaciar_aristas(Tnodo &aux)
     llama a la funcion vaciar_aristas para borrarlas
 ---------------------------------------------------------------------*/
 void eliminar_nodo()
-{   char var;
-    Tnodo aux,ant;
-    aux=p;
-    cout<<"ELIMINAR UN NODO\n";
-    if(p==NULL)
-     {
-         cout<<"GRAFO VACIO...!!!!";
-         return;
-     }
-    cout<<"INGRESE NOMBRE DE VARIABLE:";
-    cin>>var;
-
-    while(aux!=NULL)
+{
+    char var;
+    Tnodo aux, ant;
+    aux = p;
+    cout << "ELIMINAR UN NODO\n";
+    if (p == NULL)
     {
-        if(aux->nombre==var)
+        cout << "GRAFO VACIO...!!!!";
+        return;
+    }
+    cout << "INGRESE NOMBRE DE VARIABLE:";
+    cin >> var;
+
+    while (aux != NULL)
+    {
+        if (aux->nombre == var)
         {
-            if(aux->ady!=NULL)
+            if (aux->ady != NULL)
                 vaciar_aristas(aux);
 
-            if(aux==p)
+            if (aux == p)
             {
 
-                    p=p->sgte;
-                    delete(aux);
-                    cout<<"NODO ELIMINADO...!!!!";
-                    return;
-
-
-
+                p = p->sgte;
+                delete (aux);
+                cout << "NODO ELIMINADO...!!!!";
+                return;
             }
             else
             {
                 ant->sgte = aux->sgte;
-                delete(aux);
-                cout<<"NODO ELIMINADO...!!!!";
+                delete (aux);
+                cout << "NODO ELIMINADO...!!!!";
                 return;
             }
         }
         else
         {
-            ant=aux;
-            aux=aux->sgte;
-         }
+            ant = aux;
+            aux = aux->sgte;
+        }
     }
-
 }
 
 /*                      ELIMINAR ARISTA
@@ -256,45 +260,45 @@ void eliminar_nodo()
 ---------------------------------------------------------------------*/
 void eliminar_arista()
 {
-char ini, fin;
+    char ini, fin;
     Tnodo aux, aux2;
-    Tarista q,r;
-    cout<<"\n ELIMINAR ARISTA\n";
-    cout<<"INGRESE NODO DE INICIO:";
-    cin>>ini;
-    cout<<"INGRESE NODO FINAL:";
-    cin>>fin;
-    aux=p;
-    aux2=p;
-    while(aux2!=NULL)
+    Tarista q, r;
+    cout << "\n ELIMINAR ARISTA\n";
+    cout << "INGRESE NODO DE INICIO:";
+    cin >> ini;
+    cout << "INGRESE NODO FINAL:";
+    cin >> fin;
+    aux = p;
+    aux2 = p;
+    while (aux2 != NULL)
     {
-        if(aux2->nombre==fin)
+        if (aux2->nombre == fin)
         {
             break;
         }
         else
-        aux2=aux2->sgte;
+            aux2 = aux2->sgte;
     }
-     while(aux!=NULL)
+    while (aux != NULL)
     {
-        if(aux->nombre==ini)
+        if (aux->nombre == ini)
         {
-            q=aux->ady;
-            while(q!=NULL)
+            q = aux->ady;
+            while (q != NULL)
             {
-                if(q->destino==aux2)
+                if (q->destino == aux2)
                 {
-                    if(q==aux->ady)
-                        aux->ady=aux->ady->sgte;
+                    if (q == aux->ady)
+                        aux->ady = aux->ady->sgte;
                     else
-                        r->sgte=q->sgte;
-                    delete(q);
-                    cout<<"ARISTA  "<<aux->nombre<<"----->"<<aux2->nombre<<" ELIMINADA.....!!!!";
+                        r->sgte = q->sgte;
+                    delete (q);
+                    cout << "ARISTA  " << aux->nombre << "----->" << aux2->nombre << " ELIMINADA.....!!!!";
                     return;
                 }
             }
-            r=q;
-            q=q->sgte;
+            r = q;
+            q = q->sgte;
         }
         aux = aux->sgte;
     }
@@ -303,24 +307,26 @@ char ini, fin;
     funcion que imprime un grafo en su forma enlazada
 ---------------------------------------------------------------------*/
 void mostrar_grafo()
-{   Tnodo ptr;
+{
+    Tnodo ptr;
     Tarista ar;
-    ptr=p;
-    cout<<"NODO|LISTA DE ADYACENCIA\n";
+    ptr = p;
+    cout << "NODO|LISTA DE ADYACENCIA\n";
 
-    while(ptr!=NULL)
-    {   cout<<"   "<<ptr->nombre<<"|";
-        if(ptr->ady!=NULL)
+    while (ptr != NULL)
+    {
+        cout << "   " << ptr->nombre << "|";
+        if (ptr->ady != NULL)
         {
-            ar=ptr->ady;
-            while(ar!=NULL)
-            {   cout<<" "<<ar->destino->nombre;
-                ar=ar->sgte;
-             }
-
+            ar = ptr->ady;
+            while (ar != NULL)
+            {
+                cout << " " << ar->destino->nombre;
+                ar = ar->sgte;
+            }
         }
-        ptr=ptr->sgte;
-        cout<<endl;
+        ptr = ptr->sgte;
+        cout << endl;
     }
 }
 
@@ -332,34 +338,35 @@ void mostrar_aristas()
     Tnodo aux;
     Tarista ar;
     char var;
-    cout<<"MOSTRAR ARISTAS DE NODO\n";
-    cout<<"INGRESE NODO:";
-    cin>>var;
-    aux=p;
-    while(aux!=NULL)
+    cout << "MOSTRAR ARISTAS DE NODO\n";
+    cout << "INGRESE NODO:";
+    cin >> var;
+    aux = p;
+    while (aux != NULL)
     {
-        if(aux->nombre==var)
+        if (aux->nombre == var)
         {
-            if(aux->ady==NULL)
-            {   cout<<"EL NODO NO TIENE ARISTAS...!!!!";
+            if (aux->ady == NULL)
+            {
+                cout << "EL NODO NO TIENE ARISTAS...!!!!";
                 return;
-             }
+            }
             else
             {
-                cout<<"NODO|LISTA DE ADYACENCIA\n";
-                cout<<"   "<<aux->nombre<<"|";
-                ar=aux->ady;
+                cout << "NODO|LISTA DE ADYACENCIA\n";
+                cout << "   " << aux->nombre << "|";
+                ar = aux->ady;
 
-                while(ar!=NULL)
+                while (ar != NULL)
                 {
-                    cout<<ar->destino->nombre<<" ";
-                    ar=ar->sgte;
+                    cout << ar->destino->nombre << " ";
+                    ar = ar->sgte;
                 }
-                cout<<endl;
+                cout << endl;
                 return;
             }
         }
         else
-        aux=aux->sgte;
+            aux = aux->sgte;
     }
 }

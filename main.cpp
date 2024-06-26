@@ -192,6 +192,7 @@ int main()
             break;
         case 4:
             // Code for option 4
+            arbol->EliminarNodo("P369121518");
             break;
         case 5:
             // Code for option 5

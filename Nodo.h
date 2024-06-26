@@ -31,6 +31,7 @@ public:
     void setVuelo(string vuelo);
     void setTipo_de_licencia(string tipo_de_licencia);
 
+    
 
     void setIzq(Nodo* izq);
     Nodo* getIzq();
@@ -136,6 +137,8 @@ void Nodo::setTipo_de_licencia(string tipo_de_licencia)
 {
     this->tipo_de_licencia = tipo_de_licencia;
 }
+
+
 
 
 Nodo::~Nodo()
