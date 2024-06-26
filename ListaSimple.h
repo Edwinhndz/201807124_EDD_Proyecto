@@ -1,6 +1,7 @@
 #include <iostream>
-using namespace std;
 #include "NodoS.h"
+#include <string>
+using namespace std;
 
 class ListaSimple
 {
@@ -10,11 +11,17 @@ private:
 public:
     ListaSimple(/* args */);
     bool estaVacia();
-    void insertarInicio(int dato);
-    void insertarFinal(int dato);
+    void insertarInicio(int dato, string id);
+    void insertarFinal(int dato, string id);
     void eliminarInicio();
     void eliminarFinal();
     void visualizarLista();
+    void EliminarId(string id);
+    
+    NodoS *getPrimero();
+    NodoS *getUltimo();
+
+
     ~ListaSimple();
 };
 
@@ -28,9 +35,19 @@ bool ListaSimple::estaVacia()
     return (primero == nullptr) && (ultimo == nullptr);
 }
 
-void ListaSimple::insertarInicio(int dato)
+NodoS *ListaSimple::getPrimero()
 {
-    NodoS *nuevo = new NodoS(dato); //Se crea el nuevo NodoSS
+    return primero;
+}
+
+NodoS *ListaSimple::getUltimo()
+{
+    return ultimo;
+}
+
+void ListaSimple::insertarInicio(int dato, string id)
+{
+    NodoS *nuevo = new NodoS(dato, id); //Se crea el nuevo NodoS
     if (ListaSimple::estaVacia())
     {
         /* code */
@@ -44,9 +61,11 @@ void ListaSimple::insertarInicio(int dato)
     
 }
 
-void ListaSimple::insertarFinal(int dato)
+void ListaSimple::insertarFinal(int dato,string id)
 {
-    NodoS *nuevo = new NodoS(dato);
+    NodoS *nuevo = new NodoS(dato, id); //Se crea el nuevo NodoS
+    
+    //nuevo->setNumero_de_id(id);
     if (ListaSimple::estaVacia())
     {
         /* code */
@@ -133,12 +152,55 @@ void ListaSimple::visualizarLista()
             /* code */
             NodoSDato = actual->getDato();
             //cout << NodoSDato << endl;
-            cout << NodoSDato << (actual->getSiguiente() != nullptr ? " -> ": "\n");
+            cout << actual->getNumero_de_id() << (actual->getSiguiente() != nullptr ? " -> ": "\n");
             actual = actual->getSiguiente();
         }
         
     }
     
+}
+
+void ListaSimple::EliminarId(string id)
+{
+    if (ListaSimple::estaVacia())
+    {
+        cout << "La lista está vacía" << endl;
+    }
+    else
+    {
+        NodoS *temporal = primero;
+        NodoS *anterior = nullptr;
+        while (temporal != nullptr)
+        {
+            if (temporal->getNumero_de_id() == id)
+            {
+                if (temporal == primero)
+                {
+                    if(primero->getSiguiente() == nullptr)
+                    {
+                        primero = ultimo = nullptr;
+                    }else{
+                        primero = temporal->getSiguiente();
+                    }
+                }
+                else if (temporal == ultimo)
+                {
+                    ultimo = anterior;
+                    ultimo->setSiguiente(nullptr);
+                }
+                else
+                {
+                    anterior->setSiguiente(temporal->getSiguiente());
+                }
+                delete temporal;
+                cout << "Nodo eliminado" << endl;
+                return;
+            }
+            anterior = temporal;
+            temporal = temporal->getSiguiente();
+        }
+        cout << "No se encontró un nodo con el Id especificado" << endl;
+    }
 }
 
 

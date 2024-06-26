@@ -309,7 +309,7 @@ void ArbolBB::imprimirNodo(Nodo *nodoPtr)
 
         id = nodoPtr->getNumero_de_id();
         nodoDato = nodoPtr->getHoras();
-        label = id + "[label =\"" + to_string(nodoPtr->getHoras()) + "\n " + nodoPtr->getNumero_de_id() + "DER\"];\n";
+        label = id + "[label =\"" + to_string(nodoPtr->getHoras()) + "\"];\n";
         archivo << label;
         archivo << id;
 
@@ -317,7 +317,7 @@ void ArbolBB::imprimirNodo(Nodo *nodoPtr)
         nodoDato = nodoPtr->getIzq()->getHoras();
 
         id = nodoPtr->getIzq()->getNumero_de_id();
-        label = id + "[label =\"" + to_string(nodoPtr->getIzq()->getHoras())+ "\n " + nodoPtr->getNumero_de_id() +  "Izq\"];\n";
+        label = id + "[label =\"" + to_string(nodoPtr->getIzq()->getHoras()) +  "\"];\n";
         archivo << id;
         archivo << ";\n";
         archivo << label;
@@ -332,14 +332,14 @@ void ArbolBB::imprimirNodo(Nodo *nodoPtr)
 
         nodoDato = nodoPtr->getHoras();
         id = nodoPtr->getNumero_de_id();
-        label = id + "[label =\"" + to_string(nodoPtr->getHoras())+ "\n " + nodoPtr->getNumero_de_id() + "\"];\n";
+        label = id + "[label =\"" + to_string(nodoPtr->getHoras())+ "\"];\n";
         archivo << label;
 
         archivo << id;
         archivo << "->";
         nodoDato = nodoPtr->getDer()->getHoras();
         id = nodoPtr->getDer()->getNumero_de_id();
-        label = id + "[label =\"" + to_string(nodoPtr->getDer()->getHoras()) + "\n " + nodoPtr->getNumero_de_id() +  "Der\"];\n";
+        label = id + "[label =\"" + to_string(nodoPtr->getDer()->getHoras())  +  "\"];\n";
         archivo << id;
         archivo << ";\n";
         archivo << label;

@@ -10,7 +10,7 @@
     {
         "nombre": "Jane Smith",
         "nacionalidad": "Reino Unido",
-        "numero_de_id": "p98765432",
+        "numero_de_id": "P98765432",
         "vuelo": "A200",
         "horas_de_vuelo": 99,
         "tipo_de_licencia": "CPL"

@@ -9,6 +9,7 @@
 #include "json.hpp"
 #include "ListaDobleC.h"
 #include "ArbolBB.h"
+#include "TablaHash.h"
 
 using namespace std;
 
@@ -51,6 +52,57 @@ void CargaPilotos(string pilotoss, ArbolBB *arbol)
         conteo++;
 
         arbol->insertar(e, a, b, c, d, g, nullptr);
+    }
+};
+
+int Clave(string id){
+
+    int retorno = static_cast<int>(id[0]);
+    id.erase(0, 1);
+    for(char letra: id){
+            retorno += letra - '0';
+    }
+    return retorno;
+
+}
+
+
+void CargaPilotosHash(string pilotoss, TablaHash *tabla)
+{
+
+    // Abrir el archivo JSON
+
+    ifstream archivo(pilotoss);
+    if (!archivo.is_open())
+    {
+        cout << "Error al abrir el archivo de aviones." << endl;
+        return;
+    }
+
+    // Leer el contenido del archivo JSON
+    json pilotos;
+    archivo >> pilotos;
+
+    // Recorrer los pilotos y mostrar sus detalles
+   
+    for (const auto &piloto : pilotos)
+    {
+        string a = piloto["nombre"];
+        string b = piloto["nacionalidad"];
+        string c = piloto["numero_de_id"];
+        string d = piloto["vuelo"];
+        int e = piloto["horas_de_vuelo"];;
+        string g = piloto["tipo_de_licencia"];
+        
+
+        int numID = Clave(c);
+        string idd = c;
+
+        
+
+        cout << "Numero de id sumado: " << numID << endl;
+
+        tabla->Insertar(numID, idd);
     }
 };
 
@@ -104,11 +156,6 @@ void CargaAviones(string avionesss, ListaCircular *lista)
     }
 };
 
-void Disponibles(){
-
-}
-
-
 
 void CargaRutas(){
     ifstream archivo("city.txt");
@@ -154,10 +201,13 @@ int main()
     ArbolBB *arbol = new ArbolBB();
     arbol->SetRaiz();
     ListaCircular *lista = new ListaCircular();
-
+    TablaHash *tabla = new TablaHash();
+    string idPilotoEliminado = "";
+    int sumaIDPilotoEliminado = 0;
     int choice;
     int choiceRecorridos;
-    system("color 0b");
+
+    
     do
     {
         cout << "-----------------------------------------" << endl;
@@ -185,6 +235,9 @@ int main()
             // Code for option 2
 
             CargaPilotos("pilotos.json", arbol);
+
+            cout << "---------------------------------------------------------" << endl;
+            CargaPilotosHash("pilotos.json", tabla);
             break;
         case 3:
             // Code for option 3
@@ -233,16 +286,29 @@ int main()
 
         case 6:
             // Code for option 6
+
+
+            //tabla->Insertar(1);
+            
+
+            idPilotoEliminado = "P1514131719";
+            sumaIDPilotoEliminado = Clave(idPilotoEliminado);
+
+            tabla->EliminarId(idPilotoEliminado, sumaIDPilotoEliminado);
+    
             break;
         case 7:
             // Code for option 7
             cout << "Generando Reportes " << endl;
             arbol->generarReporte();
             lista->generarReporte2();
+            tabla->imprimirTabla();
+            tabla->GenerateDot();
             break;
         case 8:
             cout << "Goodbye!" << endl;
             break;
+
         default:
             cout << "Invalid choice. Please try again." << endl;
             break;
