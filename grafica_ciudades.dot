@@ -1,0 +1,29 @@
+digraph G { 
+rankdir = TB;
+label="Lista Circular";bgcolor=grey 
+subgraph cluster_top_floor{
+bgcolor=wheat; 
+label="Ciudades";
+nodo0[ shape=octagon, fontcolor=aliceblue , style=filled,color=teal, label="Ciudad: Girona
+Km: 23 Posicion: 0"]
+nodo1[ shape=octagon, fontcolor=aliceblue , style=filled,color=teal, label="Ciudad: Madrid
+Km: 23 Posicion: 1"]
+nodo2[ shape=octagon, fontcolor=aliceblue , style=filled,color=teal, label="Ciudad: Barcelona
+Km: 21 Posicion: 2"]
+nodo3[ shape=octagon, fontcolor=aliceblue , style=filled,color=teal, label="Ciudad: Zaragoza
+Km: 30 Posicion: 3"]
+nodo4[ shape=octagon, fontcolor=aliceblue , style=filled,color=teal, label="Ciudad: Sevilla
+Km: 40 Posicion: 4"]
+nodo5[ shape=octagon, fontcolor=aliceblue , style=filled,color=teal, label="Ciudad: Valencia
+Km: 11 Posicion: 5"]
+nodo6[ shape=octagon, fontcolor=aliceblue , style=filled,color=teal, label="Ciudad: Bilbao
+Km: 24 Posicion: 6"]
+nodo7[ shape=octagon, fontcolor=aliceblue , style=filled,color=teal, label="Ciudad: Granada
+Km: 17 Posicion: 7"]
+nodo8[ shape=octagon, fontcolor=aliceblue , style=filled,color=teal, label="Ciudad: Murcia
+Km: 9 Posicion: 8"]
+nodo9[ shape=octagon, fontcolor=aliceblue , style=filled,color=teal, label="Ciudad: Córdoba
+Km: 16 Posicion: 9"]
+nodo0 -> nodo1 -> nodo2 -> nodo3 -> nodo4 -> nodo5 -> nodo6 -> nodo7 -> nodo8 -> nodo9 -> nodo0;
+}
+}

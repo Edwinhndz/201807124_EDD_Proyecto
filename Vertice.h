@@ -8,7 +8,6 @@ private:
     /* data */
     string nombre; //nombre de vértice
     int numVertice; //número de vértice
-    int distancia; //distancia desde el vértice origen
 public:
     Vertice(/* args */);
     string getNombre(){
@@ -18,7 +17,7 @@ public:
         this->nombre = nombre;
     }
     bool esIgual(string nombre);
-    Vertice(string nombre, int n, int distancia);
+    Vertice(string nombre, int n);
 
     ~Vertice();
 };
@@ -27,11 +26,10 @@ Vertice::Vertice(/* args */)
 {
 }
 
-Vertice::Vertice(string nombre, int n, int distancia)
+Vertice::Vertice(string nombre, int n)
 {
     this->nombre = nombre;
     this->numVertice = n;
-    this->distancia = distancia;
 }
 
 

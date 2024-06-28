@@ -10,6 +10,7 @@
 #include "ListaDobleC.h"
 #include "ArbolBB.h"
 #include "TablaHash.h"
+#include "Grafo.h"
 
 using namespace std;
 
@@ -156,14 +157,14 @@ void CargaAviones(string avionesss, ListaCircular *lista)
     }
 };
 
-
-void CargaRutas(){
-    ifstream archivo("city.txt");
+int CargaRutasN(string ruta, ListaCircular *lista2)
+{
+    ifstream archivo(ruta);
 
     if (!archivo.is_open())
     {
         cout << "Error al abrir el archivo de commandos." << endl;
-        return;
+        return 0;
     }
 
     string linea;
@@ -190,9 +191,53 @@ void CargaRutas(){
             getline(split, km, ',');
             km.pop_back();
             cout << "Kmts: |" << km << "|" << "\n";
+            lista2->insertarCiudades(lista2->getSize(), ciudad1, stoi(km));
+            lista2->insertarCiudades(lista2->getSize(), ciudad2, stoi(km));
         }
 
     }
+    return lista2->getSize();
+}
+
+void CargarArco(Grafo *grafo, string ruta)
+{
+
+    ifstream archivo(ruta);
+
+    if (!archivo.is_open())
+    {
+        cout << "Error al abrir el archivo de commandos." << endl;
+        
+    }
+
+    string linea;
+
+    int i = 1;
+    while (getline(archivo, linea))
+    {
+        cout << "-------------------------" << i << endl;
+        cout << linea << endl;
+        cout << "-------------------------" << i << endl;
+        i++;
+         if(linea == ""){
+            cout << "linea vacia:"<< linea <<";" << endl;
+        }
+        else if (linea != "")
+        {
+            stringstream split(linea);
+            string ciudad1, ciudad2, km;
+            cout << "-------------------------" << endl;
+            getline(split, ciudad1, '/');
+            cout << "Ciudad Origen: " << ciudad1 << "\n";
+            getline(split, ciudad2, '/');
+            cout << "Ciudad Destino: " << ciudad2 << "\n";
+            getline(split, km, ',');
+            km.pop_back();
+            cout << "Kmts: |" << km << "|" << "\n";
+            grafo->nuevoArco(ciudad1, ciudad2, stoi(km));
+        }
+    }
+    
 }
 
 int main()
@@ -201,11 +246,16 @@ int main()
     ArbolBB *arbol = new ArbolBB();
     arbol->SetRaiz();
     ListaCircular *lista = new ListaCircular();
+    ListaCircular *lista2 = new ListaCircular();
     TablaHash *tabla = new TablaHash();
     string idPilotoEliminado = "";
     int sumaIDPilotoEliminado = 0;
     int choice;
     int choiceRecorridos;
+    int Ngrafo;
+    string ciudadTemp;
+    
+    Grafo grafo(50);
 
     
     do
@@ -225,6 +275,8 @@ int main()
         cout << "-----------------------------------------" << endl;
         cout << endl;
 
+        
+
         switch (choice)
         {
         case 1:
@@ -238,10 +290,25 @@ int main()
 
             cout << "---------------------------------------------------------" << endl;
             CargaPilotosHash("pilotos.json", tabla);
+            
             break;
         case 3:
             // Code for option 3
-            CargaRutas();
+            //Ngrafo= CargaRutasN("rutas.txt", lista2);
+            //grafo->setNumVertices(Ngrafo);
+            //Grafo graf(CargaRutasN("rutas.txt", lista2));
+
+            Ngrafo = CargaRutasN("city.txt", lista2);
+
+            for(int i=0;i<Ngrafo;i++){
+                ciudadTemp = lista2->CiudadIndice(i);
+                grafo.nuevoVertice(ciudadTemp);
+            }
+
+            CargarArco(&grafo, "city.txt");
+            grafo.generarReporte();
+            grafo.imprimirMatriz();
+
             break;
         case 4:
             // Code for option 4

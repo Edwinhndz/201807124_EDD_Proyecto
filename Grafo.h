@@ -21,9 +21,9 @@ public:
     int getNumVertices(); //Obtiene el número de vértices
     void setNumVertices(int n); //Establecer el número de vértices
 
-    void nuevoVertice(string nombre, int distancia);
+    void nuevoVertice(string nombre);
     int existeVertice(string nombre); //Comprueba si el nombre recibido se encuentra en la lista de vértices
-    void nuevoArco(string nom1, string nom2); //Agrega 1 a la matriz de adyacencia si los 2 vértices existen
+    void nuevoArco(string nom1, string nom2, int km); //Agrega 1 a la matriz de adyacencia si los 2 vértices existen
     void imprimirMatriz();
     void generarReporte();
     ~Grafo();
@@ -34,6 +34,7 @@ Grafo::Grafo(/* args */)
 }
 
 typedef int* int_m; //para la dimension de la matriz
+
 Grafo::Grafo(int max)
 {
     numVertices = 0; //número de vértices en el grafo, cuando se crea el grafo este aún no tiene nodos
@@ -66,12 +67,12 @@ void Grafo::setNumVertices(int n)
     this->numVertices = n;
 }
 
-void Grafo::nuevoVertice(string nombre, int distancia)
+void Grafo::nuevoVertice(string nombre)
 {
     bool existe = (existeVertice(nombre) >= 0);
     if (!existe) //Si no existe
     {
-        Vertice nuevo = Vertice(nombre,numVertices, distancia);
+        Vertice nuevo = Vertice(nombre,numVertices);
         vertices[numVertices] = nuevo; //Se agrega el nuevo vértice a la lista
         numVertices++;
     }
@@ -94,7 +95,7 @@ int Grafo::existeVertice(string nombre)
     return (i < numVertices) ? i : -1;
 }
 
-void Grafo::nuevoArco(string nom1, string nom2)
+void Grafo::nuevoArco(string nom1, string nom2, int km)
 {   //Recibe el nombre de los 2 vértices que forman el arco y los busca en el arreglo de vértices
     //Si existen agrego 1 a la matriz de adyacencia
     int vertice1, vertice2;
@@ -102,7 +103,7 @@ void Grafo::nuevoArco(string nom1, string nom2)
     vertice2 = existeVertice(nom2);
     if (vertice1 >= 0 && vertice2 >= 0)
     {
-        matrizAdy[vertice1][vertice2] = 1;  
+        matrizAdy[vertice1][vertice2] = km;  
     }
     else
     {
@@ -133,10 +134,10 @@ void Grafo::generarReporte()
         {
             for (int j = 0; j < maxVertices; j++)
             {
-                if (matrizAdy[i][j] == 1)
+                if (matrizAdy[i][j] != 0)
                 {
                     /* code */
-                    arco += vertices[i].getNombre() + " -> " + vertices[j].getNombre() + ";\n";
+                    arco += vertices[i].getNombre() + " -> " + vertices[j].getNombre() + " [label=\"" + to_string(matrizAdy[i][j]) + "\"]" + ";\n";
                     archivo << arco;
                     arco.clear();
                 }
@@ -146,9 +147,13 @@ void Grafo::generarReporte()
         archivo << "}";
         archivo.close();
         system("dot -Tpng grafo.dot -o grafo.png");
-        system("start grafo.png");
+        system("open grafo.png");
     }
 }
+
+
+
+
 
 
 Grafo::~Grafo()

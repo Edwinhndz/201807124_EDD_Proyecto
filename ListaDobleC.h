@@ -26,6 +26,9 @@ public:
     bool Encontrado(string numeroRegistro);
     void generarReporte();
     void generarReporte2();
+    bool Existe(string nombre);
+    void insertarCiudades(int pos, string nombre, int km);
+    string CiudadIndice(int id);
     //Getteres y Setters
     int getSize();
     void setSize(int size);
@@ -323,7 +326,6 @@ bool ListaCircular::Encontrado(string registro){
         do
         {
             string regis = actual->getRegistro();
-            bool isEqual = regis == registro;
             if(actual->getRegistro() == registro){
                 encontrado = true;
             }
@@ -349,10 +351,10 @@ void ListaCircular::generarReporte(){
     else
     {
         ofstream archivo; //
-        archivo.open("grafica_AvionesD.dot", ios::out);
-        archivo << "digraph G { " << endl << "rankdir = LR;" << endl << "label=\"Lista Circular\";" << "bgcolor=grey "<< endl 
+        archivo.open("grafica_ciudades.dot", ios::out);
+        archivo << "digraph G { " << endl << "rankdir = TB;" << endl << "label=\"Lista Circular\";" << "bgcolor=grey "<< endl 
         <<"subgraph cluster_top_floor{" << endl << "bgcolor=wheat; " << endl;
-        archivo << "label=\"Aviones Disponibles\";"<< endl;
+        archivo << "label=\"Ciudades\";"<< endl;
 
         string nodoDato;
         NodoA *actual = primero;
@@ -361,9 +363,8 @@ void ListaCircular::generarReporte(){
         do
         {   
             nodoDato = actual->getRegistro();
-            archivo <<"nodo"<< conteo << "[ shape=octagon, fontcolor=aliceblue , style=filled,color=teal, label=\"Registro: " <<nodoDato 
-            << "\nEstado: " << actual->getEstado() << "\nVuelo:" << actual->getVuelo() << "\nModelo:" << actual->getModelo() 
-            << "\nAnio: " << actual->getAnio() << "\"]" <<endl;
+            archivo <<"nodo"<< conteo << "[ shape=octagon, fontcolor=aliceblue , style=filled,color=teal, label=\"Ciudad: " <<nodoDato 
+            << "\nKm: " << actual->getAnio() << " Posicion: "<< actual->getDato() << "\"]" <<endl;
             actual = actual->getSiguiente();
             
             conteo++;
@@ -379,8 +380,8 @@ void ListaCircular::generarReporte(){
         archivo << "nodo0";
         archivo << ";" << endl <<"}" << endl << "}";
         archivo.close();
-        system("dot -Tpng grafica_AvionesD.dot -o grafica_AvionesD.png");
-        system("open grafica_AvionesD.png");
+        system("dot -Tpng grafica_ciudades.dot -o grafica_ciudades.png");
+        system("open grafica_ciudades.png");
     }
     
 
@@ -459,6 +460,61 @@ void ListaCircular::generarReporte2(){
     }
 };
 
+void ListaCircular::insertarCiudades(int pos, string nombre, int km)
+{
+
+    NodoA *nuevo = new NodoA(pos);
+    nuevo->setAnio(km);
+    nuevo->setRegistro(nombre);
+
+
+
+    if (ListaCircular::estaVacia())
+    {
+        nuevo->setSiguiente(nuevo);
+        primero = ultimo = nuevo;
+    }
+    else
+    {
+        if(ListaCircular::Encontrado(nombre)){
+            cout << "Ya existe la ciudad" << endl;
+            return;
+        }else
+        {
+            nuevo->setSiguiente(primero);
+            ultimo->setSiguiente(nuevo); //Se enlaza el último nodo al nuevo
+            ultimo = nuevo; //Se verfica que el nodo creado sea el último
+        }
+        
+    }
+    size++;
+}
+
+string ListaCircular::CiudadIndice(int id){
+    
+     if (ListaCircular::estaVacia())
+    {
+        /* code */
+        cout << "La lista está vacía\n" << endl;
+        return "";
+    }
+    else
+    {
+        int nodoDato;
+        NodoA *actual = primero;
+        
+        do
+        {
+            int indice = actual->getDato();
+            bool isEqual = indice == id;
+            if(isEqual){
+                return actual->getRegistro();
+                break;
+            }
+            actual = actual->getSiguiente();
+        } while (actual != primero);
+    }
+}
 
 ListaCircular::~ListaCircular()
 {
