@@ -70,15 +70,15 @@ void TablaHash::GenerateDot()
     {
         archivo << "digraph G {" << endl;
         archivo << "rankdir=LR;" << endl;
-        archivo <<"{rank =same; node0 node1 node2 node3 node4 node5 node6 node7 node8 node9 node10 node11 node12 node13 node14 node15 node16 node17}";
-        archivo << "node [shape=record];" << endl;
+        archivo << "\n node [shape=box];" << endl;
         // creacion de nodos indices
         for (int i = 0; i < tamTabla; i++)
         {
             archivo << "node" << i << "[label=\"";
-            archivo << "Indice: " << i << "\"];" << endl;
+            archivo << "" << i << "\" shape=box];" << endl;
         }
-
+        archivo <<"{rank =same; node0 node1 node2 node3 node4 node5 node6 node7 node8 node9 node10 node11 node12 node13 node14 node15 node16 node17}";
+        
         // conexcion de los indices 0->17
         for (int i = 0; i < tamTabla; i++)
         {
@@ -103,7 +103,7 @@ void TablaHash::GenerateDot()
 
                 while (actual != nullptr)
                 {
-                    archivo << actual->getNumero_de_id() <<" [label=\" id:"<< actual->getNumero_de_id() << "\"];" << endl;
+                    archivo << actual->getNumero_de_id() <<" [label=\""<< actual->getNumero_de_id() << "\" , shape=box];" << endl;
                     
                     actual = actual->getSiguiente();
                 }
