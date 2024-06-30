@@ -1,5 +1,5 @@
 #include <iostream>
-#include <string>
+#include <string.h>
 using namespace std;
 
 class Nodom
@@ -7,6 +7,8 @@ class Nodom
 private:
     /* data */
     string dato;
+    string vuelo;
+    string ciudad;
     int fila, columna;
     Nodom* anterior;
     Nodom* siguiente;
@@ -15,7 +17,7 @@ private:
     
 public:
     Nodom(/* args */);
-    Nodom(string dato, int fila, int columna);
+    Nodom(string dato, int fila, int columna, string vuelo, string ciudad);
 
     string getDato();
     void setDato(string dato);
@@ -23,6 +25,10 @@ public:
     void setFila(int fila);
     int getColumna();
     void setColumna(int columna);
+    void setVuelo(string vuelo);
+    string getVuelo();
+    void setCiudad(string ciudad);
+    string getCiudad();
 
     Nodom* getAnterior();
     void setAnterior(Nodom* anterior);
@@ -40,8 +46,13 @@ Nodom::Nodom(/* args */)
 
 }
 
-Nodom::Nodom(string dato, int fila, int columna)
+Nodom::Nodom(string dato, int fila, int columna, string vuelo, string ciudad)
 {
+    this->dato = dato;
+    this->fila = fila;
+    this->columna = columna;
+    this->vuelo = vuelo;
+    this->ciudad = ciudad;
     this->dato = dato;
     this->fila = fila;
     this->columna = columna;
@@ -120,7 +131,26 @@ void Nodom::setDato(string dato)
     this->dato = dato;
 }
 
+void Nodom::setVuelo(string vuelo)
+{
+    this->vuelo = vuelo;
+}
+
+string Nodom::getVuelo()
+{
+    return vuelo;
+}
+
+void Nodom::setCiudad(string ciudad)
+{
+    this->ciudad = ciudad;
+}
+
+string Nodom::getCiudad()
+{
+    return ciudad;
+}
+
 Nodom::~Nodom()
 {
 }
-

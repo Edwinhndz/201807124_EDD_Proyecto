@@ -11,9 +11,10 @@
 #include "ArbolBB.h"
 #include "TablaHash.h"
 #include "Grafo.h"
-#include "MatrizDispersa.h"
-#include "ArbolB.h"
-#include <vector>   
+#include "MatrizD.h"
+// #include "ArbolB.h"
+#include <vector>
+#include "BTree.h"
 
 using namespace std;
 
@@ -103,7 +104,7 @@ void CargaPilotosHash(string pilotoss, TablaHash *tabla)
         int numID = Clave(c);
         string idd = c;
 
-        //cout << "Numero de id sumado: " << numID << endl;
+        // cout << "Numero de id sumado: " << numID << endl;
 
         tabla->Insertar(numID, idd);
     }
@@ -156,11 +157,8 @@ void CargaAviones(string avionesss, ListaCircular *lista, ListaCircular *desecha
         }
         else if (i == "Disponible")
         {
-            arbolB.insert(new NodoAA(a));
+            arbolB.insert(b);
         }
-            cout << "------------recoridoooo ArboB-------------" << conteo << endl;
-            arbolB.traverse();
-            cout << "------------recoridoooo ArboB-------------" << conteo << endl;
         conteo++;
     }
     archivo.close();
@@ -192,7 +190,9 @@ int CargaRutasN(string ruta, ListaCircular *lista2)
         else if (linea != "")
         {
             stringstream split(linea);
+
             string ciudad1, ciudad2, km;
+
             cout << "-------------------------" << endl;
             getline(split, ciudad1, '/');
             cout << "Ciudad Origen: " << ciudad1 << "\n";
@@ -249,11 +249,170 @@ void CargarArco(Grafo *grafo, string ruta)
     archivo.close();
 };
 
+void FilasM(Matriz *matriz, string ruta)
+{
+    ifstream archivo(ruta);
+    if (!archivo.is_open())
+    {
+
+        return;
+    }
+
+    // Leer el contenido del archivo JSON
+
+    json pilotos;
+    archivo >> pilotos;
+
+    // Recorrer los pilotos y mostrar sus detalles
+    int conteo = 1;
+    for (const auto &piloto : pilotos)
+    {
+        string a = piloto["nombre"];
+        string b = piloto["nacionalidad"];
+        string c = piloto["numero_de_id"];
+        string d = piloto["vuelo"];
+        int e = piloto["horas_de_vuelo"];
+        string g = piloto["tipo_de_licencia"];
+        conteo++;
+        matriz->CabecerasF(d);
+    }
+}
+
+void ColumnasM(Matriz *matriz, string ruta)
+{
+    ifstream archivo(ruta);
+    if (!archivo.is_open())
+    {
+
+        return;
+    }
+
+    // Leer el contenido del archivo JSON
+    json aviones;
+    archivo >> aviones;
+
+    // Recorrer los pilotos y mostrar sus detalles
+    int conteo = 1;
+    for (const auto &avion : aviones)
+    {
+        string a = avion["vuelo"];
+        string b = avion["numero_de_registro"];
+        string c = avion["modelo"];
+        string h = avion["aerolinea"];
+        string d = avion["ciudad_destino"];
+        string i = avion["estado"];
+        // cout << "enviando ciudad: " << d << endl;
+        matriz->CabecerasC(d, a);
+    }
+}
+
+void PilotosM(Matriz *matriz, string ruta)
+{
+    ifstream archivo(ruta);
+    if (!archivo.is_open())
+    {
+
+        return;
+    }
+
+    // Leer el contenido del archivo JSON
+    json pilotos;
+    archivo >> pilotos;
+
+    // Recorrer los pilotos y mostrar sus detalles
+    int conteo = 1;
+    for (const auto &piloto : pilotos)
+    {
+        string a = piloto["nombre"];
+        string b = piloto["nacionalidad"];
+        string c = piloto["numero_de_id"];
+        string d = piloto["vuelo"];
+        int e = piloto["horas_de_vuelo"];
+        string g = piloto["tipo_de_licencia"];
+        conteo++;
+        matriz->agregarPiloto(c, d);
+    }
+}
+
+void Commandos(string ruta, ListaCircular *Mantenimineto, ArbolBB *arbolBB, TablaHash *tabla, BTree arbolB)
+{
+    ifstream archivo(ruta);
+
+    if (!archivo.is_open())
+    {
+        cout << "Error al abrir el archivo de commandos." << endl;
+        return;
+    }
+
+    string linea;
+
+    int i = 1;
+    while (getline(archivo, linea))
+    {
+        // Lo vamos imprimiendo
+
+        cout << i << ".------------------------------------------" << endl;
+        cout << "Una línea: ";
+        cout << linea << endl;
+
+        if (linea == "")
+        {
+            cout << "linea vacia" << endl;
+        }
+        else if (linea[0] == 'M')
+        {
+            stringstream split(linea);
+            string linea, accion, avion;
+            cout << "-------------------------" << endl;
+            getline(split, linea, ',');
+            cout << "Commando: " << linea << "\n";
+            getline(split, accion, ',');
+            cout << "accion: " << accion << "\n";
+            getline(split, avion, ',');
+            avion.pop_back();
+            cout << "avion: |" << avion << "|" << "\n";
+            if (accion == "Ingreso")
+            {
+
+                Mantenimineto->insertarFinal(0, "0", avion, "0", "0", "0", "Disponible");
+                arbolB.remove(avion);
+            }
+            else if (accion == "Salida")
+            {
+                Mantenimineto->eliminarNodo1(avion);
+                arbolB.insert(avion);
+            }
+        }
+        else if (linea[0] == 'D')
+        {
+            cout << "-------------------------" << endl;
+            cout << "Borrar pilotos" << endl;
+            cout << "-------------------------" << endl;
+            size_t startPos = linea.find('(');
+            size_t endPos = linea.find(')');
+            // Verificar que los paréntesis existan en la cadena
+            if (startPos != std::string::npos && endPos != std::string::npos && startPos < endPos)
+            {
+                // Extraer el valor entre los paréntesis
+                std::string value = linea.substr(startPos + 1, endPos - startPos - 1);
+                std::cout << "El valor dentro de los paréntesis es: " << value << std::endl;
+                arbolBB->EliminarNodo(value);
+                tabla->EliminarId(value, Clave(value));
+            }
+            else
+            {
+                std::cout << "Paréntesis no encontrados o mal posicionados." << std::endl;
+            }
+        }
+        i++;
+    }
+}
+
+
 
 void Corto(Grafo *grafo)
 {
 
-    
     string ciudad1;
     string ciudad2;
     cout << "Ingrese la ciudad de origen: ";
@@ -261,9 +420,9 @@ void Corto(Grafo *grafo)
     cout << "Ingrese la ciudad de destino: ";
     cin >> ciudad2;
     cout << "Camino mas corto: " << endl;
-    vector<string> camino = grafo->caminoMasCorto(ciudad1, ciudad2); 
+    vector<string> camino = grafo->caminoMasCorto(ciudad1, ciudad2);
 
-
+    cout << "Inicio camino -> ";
     for (const string &ciudad : camino)
     {
         cout << ciudad << " ->  ";
@@ -291,6 +450,7 @@ int main()
 
     string rutaPiloto;
     string rutaAvion;
+    string rutaMovimiento;
 
     string ciudad1;
     string ciudad2;
@@ -298,11 +458,14 @@ int main()
     Grafo grafo(50);
     string camino;
     Matriz matriz;
-    BTree arbolB(5);
+    string piloto;
+    string avione;
+    string graf;
+    BTree arbolB(3);
 
     do
     {
-    
+
         cout << endl;
 
         cout << "-----------------------------------------" << endl;
@@ -324,23 +487,31 @@ int main()
         {
         case 1:
             // Code for option 1
-            CargaAviones("aviones.json", lista, desechables, arbolB);
+            cout << "Coloque el nombre del archivo de aviones: ";
+            cin >> avione;
+            CargaAviones(avione, lista, desechables, arbolB);
 
             break;
         case 2:
             // Code for option 2
 
-            CargaPilotos("pilotos-2.json", arbol);
+            cout << "Coloque el nombre del archivo de pilotos: ";
+            cin >> piloto;
+
+            CargaPilotos(piloto, arbol);
 
             cout << "---------------------------------------------------------" << endl;
-            CargaPilotosHash("pilotos-2.json", tabla);
+            CargaPilotosHash(piloto, tabla);
 
             break;
         case 3:
             // Code for option 3
             // Grafo graf(CargaRutasN("rutas.txt", lista2));
 
-            Ngrafo = CargaRutasN("rutas.txt", lista2);
+            cout << "Coloque el nombre del archivo de rutas: ";
+            cin >> graf;
+
+            Ngrafo = CargaRutasN(graf, lista2);
 
             for (int i = 0; i < Ngrafo; i++)
             {
@@ -351,10 +522,25 @@ int main()
             CargarArco(&grafo, "rutas.txt");
             grafo.imprimirMatriz();
 
+            // pasos toda info carfada para la matriz
+            cout << "en filas" << endl;
+            FilasM(&matriz, piloto);
+            cout << "en columnas" << endl;
+            ColumnasM(&matriz, avione);
+            cout << "en pilotos" << endl;
+            PilotosM(&matriz, piloto);
+
+            matriz.generarReporte();
+            matriz.imprimirColumnas();
+            matriz.imprimirFilas();
+
             break;
         case 4:
             // Code for option 4
-            arbol->EliminarNodo("P369121518");
+            // arbol->EliminarNodo("P369121518");
+            cout << "Coloque el nombre del archivo de movimientos: ";
+            cin >> rutaMovimiento;
+            Commandos(rutaMovimiento, lista, arbol, tabla, arbolB);
             break;
         case 5:
             // Code for option 5
@@ -405,7 +591,6 @@ int main()
             // cout << endl;
             Corto(&grafo);
 
-
             break;
         case 7:
             // Code for option 7
@@ -415,10 +600,10 @@ int main()
             lista->generarReporte2();
             tabla->GenerateDot();
             grafo.generarReporte();
-            //matriz.generarDot();
-            // arbolB.remove("V703");
-            // arbolB.remove("V706");
-            arbolB.generateDOT("arbolB.dot");
+            // matriz.generarDot();
+            //  arbolB.remove("V703");
+            //  arbolB.remove("V706");
+            arbolB.generateDOT();
 
             // consola
             tabla->imprimirTabla();

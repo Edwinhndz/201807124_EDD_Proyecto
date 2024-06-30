@@ -281,15 +281,15 @@ void ListaCircular::eliminarNodo2(string numeroRegistro) {
         do {
             if (temporal->getRegistro() == numeroRegistro) {
                 if (temporal == primero) {
-                    cout << "primer avion de disponible " << temporal->getRegistro() << endl;
+                    //cout << "primer avion de disponible " << temporal->getRegistro() << endl;
                     primero = temporal->getSiguiente();
                     ultimo->setSiguiente(primero);
                 } else if (temporal == ultimo) {
-                    cout << "ultimo avion disponible " << temporal->getRegistro() << endl;
+                    //cout << "ultimo avion disponible " << temporal->getRegistro() << endl;
                     ultimo = anterior;
                     ultimo->setSiguiente(primero);
                 } else {
-                    cout << "avion disponible " << temporal->getRegistro() << endl;
+                    //cout << "avion disponible " << temporal->getRegistro() << endl;
                     anterior->setSiguiente(temporal->getSiguiente());
                 }
                 delete temporal;

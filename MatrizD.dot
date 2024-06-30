@@ -1,0 +1,73 @@
+digraph G {
+bgcolor=skyblue;
+fontcolor=white;
+label= "Matriz Dispersa";
+labelloc="t"
+nodesep=0.5
+node [shape=box width=1.2 style=filled fillcolor="#313638" fontcolor=white color=transparent]
+ edge [fontcolor=white color="#ff5400"];
+/*------------Cabeceras Horizontales------------*/
+node0 [label="Root" group=1];
+node1[label="Girona" group=2];
+node2[label="Madrid" group=3];
+node3[label="Barcelona" group=4];
+node4[label="Sevilla" group=5];
+node5[label="Valencia" group=6];
+node6[label="Zaragoza" group=7];
+node7[label="Bilbao" group=8];
+node8[label="Granada" group=9];
+node9[label="Córdoba" group=10];
+node10[label="Murcia" group=11];
+/*------------Cabeceras Verticales------------*/
+node11[label="V715" group=1];
+node12[label="V714" group=1];
+node13[label="V713" group=1];
+node14[label="V712" group=1];
+node15[label="V711" group=1];
+node16[label="V710" group=1];
+node17[label="V709" group=1];
+node18[label="V708" group=1];
+node19[label="V707" group=1];
+node20[label="V706" group=1];
+node21[label="V705" group=1];
+node22[label="V704" group=1];
+node23[label="V703" group=1];
+node24[label="V702" group=1];
+node25[label="V701" group=1];
+node26[label="V700" group=1];
+/*------------columna 1------------*/
+nodo161[label="X07000123 16,1" group=2];
+/*------------columna 2------------*/
+nodo152[label="X06000123 15,2" group=3];
+/*------------columna 3------------*/
+nodo133[label="X04000123 13,3" group=4];
+nodo143[label="X05000123 14,3" group=4];
+/*------------columna 4------------*/
+nodo114[label="X02000123 11,4" group=5];
+nodo124[label="X03000123 12,4" group=5];
+/*------------columna 5------------*/
+nodo95[label="X90000123 9,5" group=6];
+nodo105[label="X01000123 10,5" group=6];
+/*------------columna 6------------*/
+nodo76[label="X70000123 7,6" group=7];
+nodo86[label="X80000123 8,6" group=7];
+/*------------columna 7------------*/
+nodo57[label="X50000123 5,7" group=8];
+nodo67[label="X60000123 6,7" group=8];
+/*------------columna 8------------*/
+nodo38[label="X30000123 3,8" group=9];
+nodo48[label="X40000123 4,8" group=9];
+/*------------columna 9------------*/
+nodo29[label="X20000123 2,9" group=10];
+/*------------columna 10------------*/
+nodo110[label="X10000123 1,10" group=11];
+/*------------Relaciones Horizontales------------*/
+node0 -> node1  node1 -> node2  node2 -> node3  node3 -> node4  node4 -> node5  node5 -> node6  node6 -> node7  node7 -> node8  node8 -> node9  node9 -> node10 ;
+node10 -> node9 node9 -> node8 node8 -> node7 node7 -> node6 node6 -> node5 node5 -> node4 node4 -> node3 node3 -> node2 node2 -> node1  -> node0;
+nodo110 -> node11;
+node11 -> nodo110;
+/*------------Relaciones Verticales------------*/
+node0 -> node11  node11 -> node12  node12 -> node13  node13 -> node14  node14 -> node15  node15 -> node16  node16 -> node17  node17 -> node18  node18 -> node19  node19 -> node20  node20 -> node21  node21 -> node22  node22 -> node23  node23 -> node24  node24 -> node25  -> node26;
+node26 -> node25 node25 -> node24 node24 -> node23 node23 -> node22 node22 -> node21 node21 -> node20 node20 -> node19 node19 -> node18 node18 -> node17 node17 -> node16 node16 -> node15 node15 -> node14 node14 -> node13 node13 -> node12 node12 -> node11  -> node0;
+/*------------Encuadre-----------*/
+{ rank=same; node0; node1; node2; node3; node4; node5; node6; node7; node8; node9; node10; };

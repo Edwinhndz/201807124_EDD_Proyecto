@@ -394,9 +394,6 @@ void ArbolBB::eliminarNodo(Nodo *arbol, string id, int horas)
     }
 }
 
-void ArbolBB::eliminar(Nodo *arbol){
-
-}
 
 void ArbolBB::SetRaiz()
 {
