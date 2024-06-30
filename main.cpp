@@ -13,6 +13,7 @@
 #include "Grafo.h"
 #include "MatrizDispersa.h"
 #include "ArbolB.h"
+#include <vector>   
 
 using namespace std;
 
@@ -249,6 +250,28 @@ void CargarArco(Grafo *grafo, string ruta)
 };
 
 
+void Corto(Grafo *grafo)
+{
+
+    
+    string ciudad1;
+    string ciudad2;
+    cout << "Ingrese la ciudad de origen: ";
+    cin >> ciudad1;
+    cout << "Ingrese la ciudad de destino: ";
+    cin >> ciudad2;
+    cout << "Camino mas corto: " << endl;
+    vector<string> camino = grafo->caminoMasCorto(ciudad1, ciudad2); 
+
+
+    for (const string &ciudad : camino)
+    {
+        cout << ciudad << " ->  ";
+    }
+
+    cout << "Fin camino" << endl;
+}
+
 int main()
 {
     // estructuras
@@ -273,6 +296,7 @@ int main()
     string ciudad2;
 
     Grafo grafo(50);
+    string camino;
     Matriz matriz;
     BTree arbolB(5);
 
@@ -314,8 +338,6 @@ int main()
             break;
         case 3:
             // Code for option 3
-            // Ngrafo= CargaRutasN("rutas.txt", lista2);
-            // grafo->setNumVertices(Ngrafo);
             // Grafo graf(CargaRutasN("rutas.txt", lista2));
 
             Ngrafo = CargaRutasN("rutas.txt", lista2);
@@ -376,10 +398,13 @@ int main()
 
             // tabla->Insertar(1);
 
-            idPilotoEliminado = "P1514131719";
-            sumaIDPilotoEliminado = Clave(idPilotoEliminado);
+            // vector<string> caminoo = grafo.caminoMasCorto("Murcia", "Madrid");
+            // for (const string& ciudad : caminoo) {
+            //     cout << ciudad << " ";
+            // }
+            // cout << endl;
+            Corto(&grafo);
 
-            tabla->EliminarId(idPilotoEliminado, sumaIDPilotoEliminado);
 
             break;
         case 7:

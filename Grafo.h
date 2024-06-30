@@ -1,7 +1,12 @@
 #include <iostream>
-#include <fstream>
-using namespace std;
+#include <vector>
+#include <queue>
+#include <string>
+#include <algorithm> 
 #include "Vertice.h"
+using namespace std;
+
+const int INFINITO = 1000000; // Define un valor grande para representar infinito
 
 class Grafo
 {
@@ -26,6 +31,89 @@ public:
     void nuevoArco(string nom1, string nom2, int km); //Agrega 1 a la matriz de adyacencia si los 2 vértices existen
     void imprimirMatriz();
     void generarReporte();
+    
+
+    int obtenerIndice(string nombre) {
+        for (int i = 0; i < numVertices; i++) {
+            if (vertices[i].getNombre() == nombre) {
+                return i;
+            }
+        }
+        return -1; // Si el vértice no existe
+    }
+
+    string obtenerNombre(int indice) {
+        if (indice >= 0 && indice < numVertices) {
+            return vertices[indice].getNombre();
+        }
+        return ""; // Si el índice no es válido
+    }
+
+    vector<int> dijkstra(string srcNombre) {
+        //cout << "en metodo2" <<endl;
+        int src = obtenerIndice(srcNombre);
+        if (src == -1) {
+            cerr << "El vértice de origen no existe." << endl;
+            return vector<int>();
+        }
+
+        vector<int> dist(maxVertices, INFINITO);
+        dist[src] = 0;
+
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        pq.push(make_pair(0, src));
+
+        while (!pq.empty()) {
+            //cout << "en metodo3" <<endl;
+            int u = pq.top().second;
+            pq.pop();
+
+            for (int v = 0; v < maxVertices; v++) {
+                if (matrizAdy[u][v] != 0) {
+                    int peso = matrizAdy[u][v];
+                    if (dist[v] > dist[u] + peso) {
+                        dist[v] = dist[u] + peso;
+                        pq.push(make_pair(dist[v], v));
+                    }
+                }
+            }
+        }
+
+        return dist;
+    }
+
+    vector<string> caminoMasCorto(string origen, string destino) {
+        //cout <<"en metodo1" <<endl;
+        vector<int> dist = dijkstra(origen);
+        int dest = obtenerIndice(destino);
+        if (dest == -1) {
+            cerr << "El vértice de destino no existe." << endl;
+            return vector<string>();
+        }
+
+        vector<string> camino;
+        int current = dest;
+        camino.push_back(obtenerNombre(current));
+        cout << dest<<endl;
+
+        
+    cout << endl;
+
+        while (dist[current] != 0) {
+            for (int i = 0; i < maxVertices; i++) {
+                if (matrizAdy[i][current] != 0 && dist[current] == dist[i] + matrizAdy[i][current]) {
+                    camino.push_back(obtenerNombre(i));
+                    current = i;
+                    break;
+                }
+            }
+        }
+
+        reverse(camino.begin(), camino.end());
+        return camino;
+    }
+
+
     ~Grafo();
 };
 
@@ -150,7 +238,6 @@ void Grafo::generarReporte()
         system("open grafo.png");
     }
 }
-
 
 
 
