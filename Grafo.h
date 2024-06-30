@@ -128,7 +128,7 @@ void Grafo::generarReporte()
     if (getNumVertices() == 0) {} //Grafo vacío
     else{
         archivo.open("grafo.dot",ios::out);
-        archivo << "digraph G { " << endl;
+        archivo << "digraph G { \n rankdir= LR;\n " << endl;
 
         for (int i = 0; i < maxVertices; i++)
         {

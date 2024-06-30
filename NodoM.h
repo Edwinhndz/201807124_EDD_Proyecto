@@ -12,7 +12,7 @@ private:
     Nodom* siguiente;
     Nodom* arriba;
     Nodom* abajo;
-
+    
 public:
     Nodom(/* args */);
     Nodom(string dato, int fila, int columna);
@@ -123,3 +123,4 @@ void Nodom::setDato(string dato)
 Nodom::~Nodom()
 {
 }
+

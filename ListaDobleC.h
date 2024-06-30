@@ -514,6 +514,7 @@ string ListaCircular::CiudadIndice(int id){
             actual = actual->getSiguiente();
         } while (actual != primero);
     }
+    return "";
 }
 
 ListaCircular::~ListaCircular()

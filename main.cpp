@@ -11,6 +11,8 @@
 #include "ArbolBB.h"
 #include "TablaHash.h"
 #include "Grafo.h"
+#include "MatrizDispersa.h"
+#include "ArbolB.h"
 
 using namespace std;
 
@@ -54,19 +56,20 @@ void CargaPilotos(string pilotoss, ArbolBB *arbol)
 
         arbol->insertar(e, a, b, c, d, g, nullptr);
     }
+    archivo.close();
 };
 
-int Clave(string id){
+int Clave(string id)
+{
 
     int retorno = static_cast<int>(id[0]);
     id.erase(0, 1);
-    for(char letra: id){
-            retorno += letra - '0';
+    for (char letra : id)
+    {
+        retorno += letra - '0';
     }
     return retorno;
-
 }
-
 
 void CargaPilotosHash(string pilotoss, TablaHash *tabla)
 {
@@ -85,35 +88,34 @@ void CargaPilotosHash(string pilotoss, TablaHash *tabla)
     archivo >> pilotos;
 
     // Recorrer los pilotos y mostrar sus detalles
-   
+
     for (const auto &piloto : pilotos)
     {
         string a = piloto["nombre"];
         string b = piloto["nacionalidad"];
         string c = piloto["numero_de_id"];
         string d = piloto["vuelo"];
-        int e = piloto["horas_de_vuelo"];;
+        int e = piloto["horas_de_vuelo"];
+        ;
         string g = piloto["tipo_de_licencia"];
-        
 
         int numID = Clave(c);
         string idd = c;
 
-        
-
-        cout << "Numero de id sumado: " << numID << endl;
+        //cout << "Numero de id sumado: " << numID << endl;
 
         tabla->Insertar(numID, idd);
     }
+    archivo.close();
 };
 
-void Mantenimineto(string vuelo, string registro, string modelo, string aerolinea, string destino, string estado, ListaCircular *lista){
-    lista->insertarFinal(0,vuelo, registro, modelo, aerolinea, destino, estado);
+void Mantenimineto(string vuelo, string registro, string modelo, string aerolinea, string destino, string estado, ListaCircular *lista)
+{
+    lista->insertarFinal(0, vuelo, registro, modelo, aerolinea, destino, estado);
 }
 
-void CargaAviones(string avionesss, ListaCircular *lista)
+void CargaAviones(string avionesss, ListaCircular *lista, ListaCircular *desechables, BTree &arbolB)
 
-// void IngresoEquipaje();
 {
     // Abrir el archivo JSON
     ifstream archivo(avionesss);
@@ -147,14 +149,20 @@ void CargaAviones(string avionesss, ListaCircular *lista)
         string i = avion["estado"];
         cout << "-------------------------" << conteo << endl;
 
-        if(i == "Mantenimiento"){
+        if (i == "Mantenimiento")
+        {
             Mantenimineto(a, b, c, h, d, i, lista);
-        }else if(i == "Disponible"){
-            cout << "Disponible" << endl;
         }
-
+        else if (i == "Disponible")
+        {
+            arbolB.insert(new NodoAA(a));
+        }
+            cout << "------------recoridoooo ArboB-------------" << conteo << endl;
+            arbolB.traverse();
+            cout << "------------recoridoooo ArboB-------------" << conteo << endl;
         conteo++;
     }
+    archivo.close();
 };
 
 int CargaRutasN(string ruta, ListaCircular *lista2)
@@ -176,8 +184,9 @@ int CargaRutasN(string ruta, ListaCircular *lista2)
         cout << linea << endl;
         cout << "-------------------------" << i << endl;
         i++;
-         if(linea == ""){
-            cout << "linea vacia:"<< linea <<";" << endl;
+        if (linea == "")
+        {
+            cout << "linea vacia:" << linea << ";" << endl;
         }
         else if (linea != "")
         {
@@ -194,7 +203,6 @@ int CargaRutasN(string ruta, ListaCircular *lista2)
             lista2->insertarCiudades(lista2->getSize(), ciudad1, stoi(km));
             lista2->insertarCiudades(lista2->getSize(), ciudad2, stoi(km));
         }
-
     }
     return lista2->getSize();
 }
@@ -207,7 +215,6 @@ void CargarArco(Grafo *grafo, string ruta)
     if (!archivo.is_open())
     {
         cout << "Error al abrir el archivo de commandos." << endl;
-        
     }
 
     string linea;
@@ -219,8 +226,9 @@ void CargarArco(Grafo *grafo, string ruta)
         cout << linea << endl;
         cout << "-------------------------" << i << endl;
         i++;
-         if(linea == ""){
-            cout << "linea vacia:"<< linea <<";" << endl;
+        if (linea == "")
+        {
+            cout << "linea vacia:" << linea << ";" << endl;
         }
         else if (linea != "")
         {
@@ -237,8 +245,9 @@ void CargarArco(Grafo *grafo, string ruta)
             grafo->nuevoArco(ciudad1, ciudad2, stoi(km));
         }
     }
-    
-}
+    archivo.close();
+};
+
 
 int main()
 {
@@ -247,19 +256,31 @@ int main()
     arbol->SetRaiz();
     ListaCircular *lista = new ListaCircular();
     ListaCircular *lista2 = new ListaCircular();
+
     TablaHash *tabla = new TablaHash();
     string idPilotoEliminado = "";
+    ListaCircular *desechables = new ListaCircular();
     int sumaIDPilotoEliminado = 0;
     int choice;
     int choiceRecorridos;
     int Ngrafo;
     string ciudadTemp;
-    
-    Grafo grafo(50);
 
-    
+    string rutaPiloto;
+    string rutaAvion;
+
+    string ciudad1;
+    string ciudad2;
+
+    Grafo grafo(50);
+    Matriz matriz;
+    BTree arbolB(5);
+
     do
     {
+    
+        cout << endl;
+
         cout << "-----------------------------------------" << endl;
         cout << "Menu:" << endl;
         cout << "1. Carga de aviones" << endl;
@@ -275,38 +296,37 @@ int main()
         cout << "-----------------------------------------" << endl;
         cout << endl;
 
-        
-
         switch (choice)
         {
         case 1:
             // Code for option 1
-            CargaAviones("aviones3.json", lista);
+            CargaAviones("aviones.json", lista, desechables, arbolB);
+
             break;
         case 2:
             // Code for option 2
 
-            CargaPilotos("pilotos.json", arbol);
+            CargaPilotos("pilotos-2.json", arbol);
 
             cout << "---------------------------------------------------------" << endl;
-            CargaPilotosHash("pilotos.json", tabla);
-            
+            CargaPilotosHash("pilotos-2.json", tabla);
+
             break;
         case 3:
             // Code for option 3
-            //Ngrafo= CargaRutasN("rutas.txt", lista2);
-            //grafo->setNumVertices(Ngrafo);
-            //Grafo graf(CargaRutasN("rutas.txt", lista2));
+            // Ngrafo= CargaRutasN("rutas.txt", lista2);
+            // grafo->setNumVertices(Ngrafo);
+            // Grafo graf(CargaRutasN("rutas.txt", lista2));
 
-            Ngrafo = CargaRutasN("city.txt", lista2);
+            Ngrafo = CargaRutasN("rutas.txt", lista2);
 
-            for(int i=0;i<Ngrafo;i++){
+            for (int i = 0; i < Ngrafo; i++)
+            {
                 ciudadTemp = lista2->CiudadIndice(i);
                 grafo.nuevoVertice(ciudadTemp);
             }
 
-            CargarArco(&grafo, "city.txt");
-            grafo.generarReporte();
+            CargarArco(&grafo, "rutas.txt");
             grafo.imprimirMatriz();
 
             break;
@@ -354,23 +374,29 @@ int main()
         case 6:
             // Code for option 6
 
-
-            //tabla->Insertar(1);
-            
+            // tabla->Insertar(1);
 
             idPilotoEliminado = "P1514131719";
             sumaIDPilotoEliminado = Clave(idPilotoEliminado);
 
             tabla->EliminarId(idPilotoEliminado, sumaIDPilotoEliminado);
-    
+
             break;
         case 7:
             // Code for option 7
+            // Graphviz
             cout << "Generando Reportes " << endl;
             arbol->generarReporte();
             lista->generarReporte2();
-            tabla->imprimirTabla();
             tabla->GenerateDot();
+            grafo.generarReporte();
+            //matriz.generarDot();
+            // arbolB.remove("V703");
+            // arbolB.remove("V706");
+            arbolB.generateDOT("arbolB.dot");
+
+            // consola
+            tabla->imprimirTabla();
             break;
         case 8:
             cout << "Goodbye!" << endl;

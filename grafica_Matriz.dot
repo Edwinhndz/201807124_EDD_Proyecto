@@ -1,0 +1,7 @@
+digraph G { 
+node [shape=box];
+/*--------------Cabezeras Horizontales--------------*/
+X0[label="Root"];
+
+}
+}

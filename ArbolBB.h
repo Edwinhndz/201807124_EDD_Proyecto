@@ -103,13 +103,13 @@ Nodo *ArbolBB::BorrarNodo(Nodo *root, int horas_de_vuelo) {
     }
 	// Wohoo... I found you, Get ready to be deleted	
 	else {
-		// Case 1:  No child
+		// si no tiene hojas
 		if(root->getIzq() == nullptr && root->getDer() == nullptr ) { 
 			delete root;
 			root = nullptr;
 		}
 
-		//Case 2: One child 
+		// si tiene 1 hoja
 		else if(root->getIzq() == nullptr) {
 			Nodo *temp = root;
 			root = root->getDer();
@@ -120,8 +120,8 @@ Nodo *ArbolBB::BorrarNodo(Nodo *root, int horas_de_vuelo) {
 			root = root->getIzq();
 			delete temp;
 		}
-		// case 3: 2 children
-		else { 
+		// si tiene 2 hojas
+		else if(root->getIzq() != nullptr && root->getDer() != nullptr){ 
 			Nodo temp = EncontrarMax(root->getIzq());
             // Copiamos todos los atributos relevantes
             root->setHoras( temp.getHoras());
@@ -137,8 +137,6 @@ Nodo *ArbolBB::BorrarNodo(Nodo *root, int horas_de_vuelo) {
 	return root;
 }
 
-//fin eliminar
-
 bool ArbolBB::estaVacio()
 {
     return (raiz == nullptr);
@@ -146,7 +144,6 @@ bool ArbolBB::estaVacio()
 
 void ArbolBB::insertar(int horas, string name, string nacion, string id, string vuelo, string licencia, Nodo *padre)
 {
-    cout << "Horas en insertar: " << horas << "\n";
     raiz = insertarNodo(raiz, horas, name, nacion, id, vuelo, licencia, padre);
 }
 

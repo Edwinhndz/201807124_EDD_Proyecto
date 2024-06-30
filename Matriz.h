@@ -1,7 +1,10 @@
 #include <iostream>
-#include <string.h>
+#include <fstream>
+// #include <ofstream>
+#include <string>
+#include "NodoM.h"
+
 using namespace std;
-#include "Nodom.h"
 
 class Matriz
 {
@@ -15,6 +18,7 @@ public:
     Nodom* crearFila(int fila);
     Nodom* crearColumna(int columna);
     void insertar(string dato, int fila, int columna);
+    void generarDot(string nombreArchivo);
     ~Matriz();
 };
 
@@ -109,14 +113,15 @@ void Matriz::insertar(string dato, int fila, int columna)
    {
         nodoFila = crearFila(fila);
    }
-
-
+   
+    
     //INSERTAR NODODATO EN LAS CABECERAS
     /*if (nodoFila->getSiguiente() == nullptr)
     {
         nodoFila->setSiguiente(nodoDato);
         nodoDato->setAnterior(nodoFila);
     }
+
     if (nodoColumna->getAbajo() == nullptr)
     {
         nodoColumna->setAbajo(nodoDato);
@@ -151,10 +156,127 @@ void Matriz::insertar(string dato, int fila, int columna)
         auxColumna = auxColumna->getAbajo();  
    }
 
+}
+#include <fstream>
 
+void Matriz::generarDot(string nombreArchivo) {
+    ofstream archivo(nombreArchivo);
 
+    if (archivo.is_open()) {
+        archivo << "digraph G {" << endl;
+        archivo << "node [shape=record];" << endl;
+        
+        // Crear nodo root
+        archivo << "-1[label=\"root\",group=1,shape=box];" << endl;
 
+        // Imprimir cabeceras de fila
+        Nodom* fila = root->getAbajo();
+        while (fila != nullptr) {
+            archivo << fila->getFila() << "[label=\"Fila " << fila->getFila() << "\",group=1,shape=box];" << endl;
+            fila = fila->getAbajo();
+        }
 
+        // Imprimir cabeceras de columna
+        Nodom* columna = root->getSiguiente();
+        int group = 2;
+        while (columna != nullptr) {
+            archivo << "columna" << columna->getColumna() << "[label=\"Columna " << columna->getColumna() << "\",group=" << group << ",shape=box];" << endl;
+            columna = columna->getSiguiente();
+            group++;
+        }
+
+        // Conectar nodo root con cabeceras de fila y columna
+        fila = root->getAbajo();
+        archivo << "-1 -> ";
+        while (fila != nullptr) {
+            archivo << fila->getFila();
+            fila = fila->getAbajo();
+            if (fila != nullptr) {
+                archivo << " -> ";
+            }
+        }
+        archivo << ";" << endl;
+
+        columna = root->getSiguiente();
+        archivo << "-1 -> ";
+        while (columna != nullptr) {
+            archivo << "columna" << columna->getColumna();
+            columna = columna->getSiguiente();
+            if (columna != nullptr) {
+                archivo << " -> ";
+            }
+        }
+        archivo << ";" << endl;
+
+        // Recorremos filas y creamos nodos de datos
+        fila = root->getAbajo();
+        while (fila != nullptr) {
+            Nodom* nodo = fila->getSiguiente();
+            while (nodo != nullptr) {
+                archivo << "\"" << nodo->getFila() << "," << nodo->getColumna() << "\"[label=\"" << nodo->getDato() << "\",shape=box,group=" << (nodo->getColumna() + 1) << "];" << endl;
+                nodo = nodo->getSiguiente();
+            }
+            fila = fila->getAbajo();
+        }
+
+        // Conectar cabeceras de fila con sus nodos
+        fila = root->getAbajo();
+        while (fila != nullptr) {
+            archivo << fila->getFila() << " -> ";
+            Nodom* nodo = fila->getSiguiente();
+            while (nodo != nullptr) {
+                archivo << "\"" << nodo->getFila() << "," << nodo->getColumna() << "\"";
+                nodo = nodo->getSiguiente();
+                if (nodo != nullptr) {
+                    archivo << " -> ";
+                }
+            }
+            archivo << ";" << endl;
+            fila = fila->getAbajo();
+        }
+
+        // Conectar cabeceras de columna con sus nodos
+        columna = root->getSiguiente();
+        while (columna != nullptr) {
+            archivo << "columna" << columna->getColumna() << " -> ";
+            Nodom* nodo = columna->getAbajo();
+            while (nodo != nullptr) {
+                archivo << "\"" << nodo->getFila() << "," << nodo->getColumna() << "\"";
+                nodo = nodo->getAbajo();
+                if (nodo != nullptr) {
+                    archivo << " -> ";
+                }
+            }
+            archivo << ";" << endl;
+            columna = columna->getSiguiente();
+        }
+
+        // Alinear nodos en el mismo nivel
+        archivo << "{rank=same; -1";
+        columna = root->getSiguiente();
+        while (columna != nullptr) {
+            archivo << " ; columna" << columna->getColumna();
+            columna = columna->getSiguiente();
+        }
+        archivo << "; }" << endl;
+
+        fila = root->getAbajo();
+        while (fila != nullptr) {
+            archivo << "{rank=same; " << fila->getFila();
+            Nodom* nodo = fila->getSiguiente();
+            while (nodo != nullptr) {
+                archivo << " ; \"" << nodo->getFila() << "," << nodo->getColumna() << "\"";
+                nodo = nodo->getSiguiente();
+            }
+            archivo << "; }" << endl;
+            fila = fila->getAbajo();
+        }
+
+        archivo << "}" << endl;
+        archivo.close();
+    } else {
+        cout << "No se pudo abrir el archivo." << endl;
+    }
 }
 
 Matriz::~Matriz()
