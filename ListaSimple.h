@@ -164,7 +164,6 @@ void ListaSimple::EliminarId(string id)
 {
     if (ListaSimple::estaVacia())
     {
-        cout << "La lista está vacía" << endl;
     }
     else
     {
@@ -199,7 +198,6 @@ void ListaSimple::EliminarId(string id)
             anterior = temporal;
             temporal = temporal->getSiguiente();
         }
-        cout << "No se encontró un nodo con el Id especificado" << endl;
     }
 }
 

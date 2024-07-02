@@ -34,12 +34,13 @@ public:
     void eliminarNodo(Nodo *nodoPtr, string id, int horas);
     void eliminar(Nodo *nodoPtr);
 
-    //metodos para eliminar
+    // metodos para eliminar
     Nodo EncontrarMax(Nodo *nodoPtr);
     int GetHorasByID(string id);
     int GetHorasByID(Nodo *nodoPtr, string id);
     void EliminarNodo(string id);
-    Nodo *BorrarNodo(Nodo *root, int horas_de_vuelo); 
+    Nodo *BorrarNodo(Nodo *root, int horas_de_vuelo);
+    Nodo *EncontrarMinimo(Nodo *root);
 
     void SetRaiz();
     Nodo *GetRaiz();
@@ -51,33 +52,40 @@ ArbolBB::ArbolBB(/* args */)
     raiz = nullptr;
 }
 
-//elminar
+// elminar
 
-Nodo ArbolBB::EncontrarMax(Nodo *nodoPtr){
-    while(nodoPtr->getDer() != NULL) {
-        nodoPtr= nodoPtr->getDer();
+Nodo ArbolBB::EncontrarMax(Nodo *nodoPtr)
+{
+    while (nodoPtr->getDer() != NULL)
+    {
+        nodoPtr = nodoPtr->getDer();
     }
     return *nodoPtr;
 }
 
-int ArbolBB::GetHorasByID(string numero_de_id){
+int ArbolBB::GetHorasByID(string numero_de_id)
+{
     return GetHorasByID(raiz, numero_de_id);
 }
 
-int ArbolBB::GetHorasByID(Nodo *root, string numero_de_id) {
-    if (root == nullptr) {
+int ArbolBB::GetHorasByID(Nodo *root, string numero_de_id)
+{
+    if (root == nullptr)
+    {
         return -1; // Árbol vacío o llegamos a una hoja, retorna -1 como indicador de no encontrado
     }
 
     // Busca en el subárbol izquierdo
-    
-    int leftResult = GetHorasByID(root->getIzq() , numero_de_id);
-    if (leftResult != -1) {
+
+    int leftResult = GetHorasByID(root->getIzq(), numero_de_id);
+    if (leftResult != -1)
+    {
         return leftResult;
     }
 
     // Verifica el nodo actual
-    if (root->getNumero_de_id() == numero_de_id) {
+    if (root->getNumero_de_id() == numero_de_id)
+    {
         return root->getHoras();
     }
 
@@ -85,56 +93,69 @@ int ArbolBB::GetHorasByID(Nodo *root, string numero_de_id) {
     return GetHorasByID(root->getDer(), numero_de_id);
 }
 
-void ArbolBB::EliminarNodo(string numero_de_id) 
+void ArbolBB::EliminarNodo(string numero_de_id)
 {
     int horas_de_vuelo = ArbolBB::GetHorasByID(numero_de_id);
     cout << horas_de_vuelo << endl;
     raiz = BorrarNodo(raiz, horas_de_vuelo);
 }
 
-Nodo *ArbolBB::BorrarNodo(Nodo *root, int horas_de_vuelo) {
-    
-	if(root == nullptr){
-    return root;
-    } else if(horas_de_vuelo < root->getHoras() ){
-        root->setIzq(BorrarNodo(root->getIzq(),horas_de_vuelo));
-    }else if (horas_de_vuelo > root->getHoras()) {
-        root->setDer(BorrarNodo(root->getDer(),horas_de_vuelo));
-    }
-	// Wohoo... I found you, Get ready to be deleted	
-	else {
-		// si no tiene hojas
-		if(root->getIzq() == nullptr && root->getDer() == nullptr ) { 
-			delete root;
-			root = nullptr;
-		}
+Nodo *ArbolBB::BorrarNodo(Nodo *root, int horas_de_vuelo)
+{
 
-		// si tiene 1 hoja
-		else if(root->getIzq() == nullptr) {
-			Nodo *temp = root;
-			root = root->getDer();
-			delete temp;
-		}
-		else if(root->getDer() == nullptr) {
-			Nodo *temp = root;
-			root = root->getIzq();
-			delete temp;
-		}
-		// si tiene 2 hojas
-		else if(root->getIzq() != nullptr && root->getDer() != nullptr){ 
-			Nodo temp = EncontrarMax(root->getIzq());
-            // Copiamos todos los atributos relevantes
-            root->setHoras( temp.getHoras());
-            root->setNumero_de_id(temp.getNumero_de_id());
-            root->setNombre( temp.getNombre());
-            root->setNacionalidad(temp.getNacionalidad());
-            root->setVuelo(temp.getVuelo());
-            root->setTipo_de_licencia(temp.getTipo());
-            // Eliminar el nodo duplicado en el subárbol izquierdo
-            root = BorrarNodo(root->getIzq(), temp.getHoras());
-		}
-	}
-	return root;
+    if (root == nullptr)
+    {
+        return root;
+    }
+    else if (horas_de_vuelo < root->getHoras())
+    {
+        root->setIzq(BorrarNodo(root->getIzq(), horas_de_vuelo));
+    }
+    else if (horas_de_vuelo > root->getHoras())
+    {
+        root->setDer(BorrarNodo(root->getDer(), horas_de_vuelo));
+    }
+    // si el nodo tiene hijos
+    else
+    {
+        // si no tiene hojas
+        if (root->getIzq() == nullptr && root->getDer() == nullptr)
+        {
+            delete root;
+            root = nullptr;
+        }
+
+        // si tiene 1 hoja
+        else if (root->getIzq() == nullptr)
+        {
+            Nodo *temp = root;
+            root = root->getDer();
+            delete temp;
+        }
+        else if (root->getDer() == nullptr)
+        {
+            Nodo *temp = root;
+            root = root->getIzq();
+            delete temp;
+        }
+        // si tiene 2 hojas
+        else
+        {
+            Nodo *temp = EncontrarMinimo(root->getDer());
+            root->setHoras(temp->getHoras());
+            root->setDer(BorrarNodo(root->getDer(), temp->getHoras()));
+        }
+    }
+    return root;
+}
+
+Nodo *ArbolBB::EncontrarMinimo(Nodo *root)
+{
+    while (root->getIzq() != nullptr)
+    {
+        root = root->getIzq();
+    }
+    return root;
 }
 
 bool ArbolBB::estaVacio()
@@ -214,6 +235,7 @@ int ArbolBB::buscarNodo(int dato, Nodo *nodoPtr)
         recorrido++;
         return buscarNodo(dato, nodoPtr->getDer());
     }
+    return 0;
 }
 
 void ArbolBB::RecorridoPre()
@@ -314,7 +336,7 @@ void ArbolBB::imprimirNodo(Nodo *nodoPtr)
         nodoDato = nodoPtr->getIzq()->getHoras();
 
         id = nodoPtr->getIzq()->getNumero_de_id();
-        label = id + "[label =\"" + to_string(nodoPtr->getIzq()->getHoras()) +  "\"];\n";
+        label = id + "[label =\"" + to_string(nodoPtr->getIzq()->getHoras()) + "\"];\n";
         archivo << id;
         archivo << ";\n";
         archivo << label;
@@ -329,14 +351,14 @@ void ArbolBB::imprimirNodo(Nodo *nodoPtr)
 
         nodoDato = nodoPtr->getHoras();
         id = nodoPtr->getNumero_de_id();
-        label = id + "[label =\"" + to_string(nodoPtr->getHoras())+ "\"];\n";
+        label = id + "[label =\"" + to_string(nodoPtr->getHoras()) + "\"];\n";
         archivo << label;
 
         archivo << id;
         archivo << "->";
         nodoDato = nodoPtr->getDer()->getHoras();
         id = nodoPtr->getDer()->getNumero_de_id();
-        label = id + "[label =\"" + to_string(nodoPtr->getDer()->getHoras())  +  "\"];\n";
+        label = id + "[label =\"" + to_string(nodoPtr->getDer()->getHoras()) + "\"];\n";
         archivo << id;
         archivo << ";\n";
         archivo << label;
@@ -373,27 +395,6 @@ void ArbolBB::imprimirNodoId(Nodo *nodoPtr)
     }
     imprimirNodo(nodoPtr->getDer());
 }
-
-void ArbolBB::eliminarNodo(Nodo *arbol, string id, int horas)
-{
-    if (arbol == nullptr)
-    {
-        return;
-    }
-    else if (horas < arbol->getHoras())
-    {
-        eliminarNodo(arbol->getIzq(), id, horas);
-    }
-    else if (horas > arbol->getHoras())
-    {
-        eliminarNodo(arbol->getDer(), id, horas);   
-    }else if(horas == arbol->getHoras()){
-        eliminarNodo(arbol->getDer(), id, horas);
-    }else{
-        eliminar(arbol);
-    }
-}
-
 
 void ArbolBB::SetRaiz()
 {

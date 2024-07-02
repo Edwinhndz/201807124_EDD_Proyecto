@@ -274,7 +274,7 @@ void FilasM(Matriz *matriz, string ruta)
         int e = piloto["horas_de_vuelo"];
         string g = piloto["tipo_de_licencia"];
         conteo++;
-        matriz->CabecerasF(d);
+        matriz->CabecerasF(d, c);
     }
 }
 
@@ -334,7 +334,7 @@ void PilotosM(Matriz *matriz, string ruta)
     }
 }
 
-void Commandos(string ruta, ListaCircular *Mantenimineto, ArbolBB *arbolBB, TablaHash *tabla, BTree arbolB)
+void Commandos(string ruta, ListaCircular *Mantenimineto, ArbolBB *arbolBB, TablaHash *tabla, BTree arbolB, Matriz matriz)
 {
     ifstream archivo(ruta);
 
@@ -369,16 +369,18 @@ void Commandos(string ruta, ListaCircular *Mantenimineto, ArbolBB *arbolBB, Tabl
             getline(split, accion, ',');
             cout << "accion: " << accion << "\n";
             getline(split, avion, ',');
-            avion.pop_back();
+            //avion.pop_back();
             cout << "avion: |" << avion << "|" << "\n";
+            avion.pop_back();
             if (accion == "Ingreso")
             {
-
+                cout << "Ingreso=:-" << avion << "-"<<"\n";
                 Mantenimineto->insertarFinal(0, "0", avion, "0", "0", "0", "Disponible");
                 arbolB.remove(avion);
             }
             else if (accion == "Salida")
             {
+                cout << "salieno=:" << avion << "-"<<"\n";
                 Mantenimineto->eliminarNodo1(avion);
                 arbolB.insert(avion);
             }
@@ -396,8 +398,12 @@ void Commandos(string ruta, ListaCircular *Mantenimineto, ArbolBB *arbolBB, Tabl
                 // Extraer el valor entre los paréntesis
                 std::string value = linea.substr(startPos + 1, endPos - startPos - 1);
                 std::cout << "El valor dentro de los paréntesis es: " << value << std::endl;
+                cout << "Arbol BB:" << endl;
                 arbolBB->EliminarNodo(value);
+                cout << "Tabla Hash:" << endl;
                 tabla->EliminarId(value, Clave(value));
+                cout << "Matriz:" << endl;
+                matriz.EliminarPiloto(value);
             }
             else
             {
@@ -407,8 +413,6 @@ void Commandos(string ruta, ListaCircular *Mantenimineto, ArbolBB *arbolBB, Tabl
         i++;
     }
 }
-
-
 
 void Corto(Grafo *grafo)
 {
@@ -523,16 +527,14 @@ int main()
             grafo.imprimirMatriz();
 
             // pasos toda info carfada para la matriz
-            cout << "en filas" << endl;
+            //cout << "en filas" << endl;
             FilasM(&matriz, piloto);
-            cout << "en columnas" << endl;
+            //cout << "en columnas" << endl;
             ColumnasM(&matriz, avione);
-            cout << "en pilotos" << endl;
+            //cout << "en pilotos" << endl;
             PilotosM(&matriz, piloto);
-
-            matriz.generarReporte();
-            matriz.imprimirColumnas();
-            matriz.imprimirFilas();
+    
+            
 
             break;
         case 4:
@@ -540,7 +542,7 @@ int main()
             // arbol->EliminarNodo("P369121518");
             cout << "Coloque el nombre del archivo de movimientos: ";
             cin >> rutaMovimiento;
-            Commandos(rutaMovimiento, lista, arbol, tabla, arbolB);
+            Commandos(rutaMovimiento, lista, arbol, tabla, arbolB, matriz);
             break;
         case 5:
             // Code for option 5
@@ -594,19 +596,28 @@ int main()
             break;
         case 7:
             // Code for option 7
-            // Graphviz
+            // Graphviz     
             cout << "Generando Reportes " << endl;
+            cout << "Arbol BB" << endl;
             arbol->generarReporte();
+            cout << "Lista C" << endl;
             lista->generarReporte2();
+            cout << "Tabla Hash" << endl;
             tabla->GenerateDot();
+            cout << "Grafo" << endl;
             grafo.generarReporte();
             // matriz.generarDot();
             //  arbolB.remove("V703");
             //  arbolB.remove("V706");
+            cout << "Arbol B" << endl;
             arbolB.generateDOT();
 
             // consola
             tabla->imprimirTabla();
+            cout << "Matriz" << endl;
+            matriz.generarReporte();
+            matriz.imprimirColumnas();
+            matriz.imprimirFilas();
             break;
         case 8:
             cout << "Goodbye!" << endl;

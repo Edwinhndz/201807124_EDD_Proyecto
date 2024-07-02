@@ -245,15 +245,15 @@ void ListaCircular::eliminarNodo1(string numeroRegistro) {
         do {
             if (temporal->getRegistro() == numeroRegistro) {
                 if (temporal == primero) {
-                    cout << "primer avion yendo a mantenimiento " << temporal->getRegistro() << endl;
+                    //cout << "primer avion yendo a mantenimiento " << temporal->getRegistro() << endl;
                     primero = temporal->getSiguiente();
                     ultimo->setSiguiente(primero);
                 } else if (temporal == ultimo) {
-                    cout << "ultimo avion yendo a mantenimiento " << temporal->getRegistro() << endl;
+                    //cout << "ultimo avion yendo a mantenimiento " << temporal->getRegistro() << endl;
                     ultimo = anterior;
                     ultimo->setSiguiente(primero);
                 } else {
-                    cout << "avion yendo a mantenimiento " << temporal->getRegistro() << endl;
+                    //cout << "avion yendo a mantenimiento " << temporal->getRegistro() << endl;
                     anterior->setSiguiente(temporal->getSiguiente());
                 }
                 delete temporal;
@@ -407,7 +407,7 @@ void ListaCircular::generarReporte2(){
         {   
             nodoDato = actual->getRegistro();
             archivo <<"nodo"<< conteo << "[ shape=octagon, fontcolor=aliceblue , style=filled,color=teal, label=\"Registro: " <<nodoDato 
-            << "\nEstado: " << actual->getEstado() << "\nVuelo:" << actual->getVuelo() << "\nModelo:" << actual->getModelo() << "\"]" <<endl;
+            << "\nEstado: " << actual->getEstado() << "\"]" <<endl;
             //archivo << " -> ";
             actual = actual->getSiguiente();
             

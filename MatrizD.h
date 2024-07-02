@@ -16,10 +16,10 @@ public:
     Matriz(/* args */);
     Nodom *buscarFila(int fila, Nodom *inicio);
     Nodom *buscarColumna(int columna, Nodom *inicio);
-    Nodom *crearFila(int fila, string ciudad);
+    Nodom *crearFila(int fila, string ciudad, string piloto);
     Nodom *crearColumna(int columna, string vuelo);
     void imprmir();
-    void CabecerasF(string vuelo);
+    void CabecerasF(string vuelo, string piloto);
     void CabecerasC(string ciudad, string vuelo);
     void insertar(string dato, int fila, int columna, string vuelo, string ciudad);
     string regresarciudad(string);
@@ -34,6 +34,17 @@ public:
     void imprimirColumnas();
     void imprimirFilas();
     bool buscarPiloto2(int i, int j);
+    void EliminarPiloto(string piloto);
+
+    Nodom *regresarCE(string vuelo);
+    Nodom *regresarFE(string piloto);
+    int cacheCiudad(string vuelo);
+    Nodom *Eliminado(string vuelo);
+    void ActualizarColumnas();
+    void ActualizarFilas();
+    int RecorridoFilas();
+    int RecorridoColumnas();
+
     ~Matriz();
 };
 
@@ -70,9 +81,9 @@ Nodom *Matriz::buscarColumna(int columna, Nodom *inicio)
     return nullptr; // Si no la encuentra quiere decir que no existe la cabecera columna
 }
 
-Nodom *Matriz::crearFila(int fila, string vuelo)
+Nodom *Matriz::crearFila(int fila, string vuelo, string piloto)
 {
-    Nodom *f = new Nodom("Fila", fila, -1, vuelo, " ");
+    Nodom *f = new Nodom(piloto, fila, -1, vuelo, " ");
     Nodom *aux = root;
     while (aux->getAbajo() != nullptr)
     {
@@ -96,7 +107,7 @@ Nodom *Matriz::crearColumna(int columna, string ciudad)
     return c;
 }
 
-void Matriz::CabecerasF(string vuelo)
+void Matriz::CabecerasF(string vuelo, string piloto)
 {
     Nodom *aux = root;
     while (aux->getAbajo() != nullptr)
@@ -108,7 +119,7 @@ void Matriz::CabecerasF(string vuelo)
             return;
         }
     }
-    Nodom *nuevo = new Nodom("Fila", filas, 0, vuelo, " ");
+    Nodom *nuevo = new Nodom(piloto, filas, 0, vuelo, " ");
     aux->setAbajo(nuevo);
     nuevo->setArriba(aux);
     filas++;
@@ -175,79 +186,25 @@ Nodom *Matriz::regresarColumna(string ciudad)
     return nullptr;
 }
 
-void Matriz::insertar(string dato, int fila, int columna, string vuelo, string ciudad)
+Nodom *Matriz::regresarFE(string piloto)
 {
-    Nodom *nodoDato = new Nodom(dato, fila, columna, vuelo, ciudad);
-    Nodom *nodoFila;    // Para saber en que fila insertar
-    Nodom *nodoColumna; // Para saber en que columna insertar
+    Nodom *aux = root;
+    Nodom *aux2 = aux;
 
-    nodoFila = buscarFila(fila, root);
-    nodoColumna = buscarColumna(columna, root);
-
-    // REVISAMOS SI EXISTEN LOS ENCABEZADOS
-    /*if (nodoFila == nullptr)
+    while (aux->getAbajo() != nullptr)
     {
-        nodoFila = crearFila(fila);
-    }
-    if (nodoColumna == nullptr)
-    {
-        nodoColumna = crearColumna(columna);
-    }*/
-
-    if (nodoFila == nullptr && nodoColumna == nullptr) // Caso 1
-    {
-        nodoFila = crearFila(fila, vuelo);
-        nodoColumna = crearColumna(columna, ciudad);
-    }
-    else if (nodoFila != nullptr && nodoColumna == nullptr) // Caso 2
-    {
-        nodoColumna = crearColumna(columna, ciudad);
-    }
-    else if (nodoFila == nullptr && nodoColumna != nullptr)
-    {
-        nodoFila = crearFila(fila, vuelo);
-    }
-
-    // INSERTAR NODODATO EN LAS CABECERAS
-    /*if (nodoFila->getSiguiente() == nullptr)
-    {
-        nodoFila->setSiguiente(nodoDato);
-        nodoDato->setAnterior(nodoFila);
-    }
-
-    if (nodoColumna->getAbajo() == nullptr)
-    {
-        nodoColumna->setAbajo(nodoDato);
-        nodoDato->setArriba(nodoColumna);
-    }*/
-
-    // Insertando nodoDato en la cabecera fila
-    Nodom *auxFila = nodoFila;
-    while (auxFila != nullptr)
-    {
-        if (auxFila->getSiguiente() == nullptr) // Encontre el último nodo (puede ser la misma cabecera)
+        aux = aux->getAbajo();
+        aux2 = aux;
+        while (aux2->getSiguiente() != nullptr)
         {
-            // Hacemos los enlaces correspondientes
-            auxFila->setSiguiente(nodoDato);
-            nodoDato->setAnterior(auxFila);
-            break;
+            aux2 = aux2->getSiguiente();
+            if (aux2->getDato() == piloto)
+            {
+                return aux2;
+            }
         }
-        auxFila = auxFila->getSiguiente();
     }
-
-    // Insertando nodoDato en la cabecera columna
-    Nodom *auxColumna = nodoColumna;
-    while (auxColumna != nullptr)
-    {
-        if (auxColumna->getAbajo() == nullptr) // Encontre el último nodo (puede ser la misma cabecera)
-        {
-            // Hacemos los enlaces correspondientes
-            auxColumna->setAbajo(nodoDato);
-            nodoDato->setArriba(auxColumna);
-            break;
-        }
-        auxColumna = auxColumna->getAbajo();
-    }
+    return nullptr;
 }
 
 string Matriz::regresarciudad(string vuelo)
@@ -318,6 +275,330 @@ void Matriz::agregarPiloto(string piloto, string vuelo)
             nuevo->setArriba(aux);
         }
     }
+}
+
+Nodom *Matriz::regresarCE(string vuelo)
+{
+    Nodom *aux = root;
+    //cout << "buscando: " << vuelo << endl;
+    while (aux->getSiguiente() != nullptr)
+    {
+        aux = aux->getSiguiente();
+        //cout << "ciudad: ";
+        //cout << aux->getCiudad() << " vuelos : " << aux->getVuelo() << endl;
+        size_t found = aux->getVuelo().find(',');
+        if (found == 4)
+        {
+            
+            cout << "varias ciudades;" << endl;
+            string lectura;
+            stringstream ss(aux->getVuelo());
+            while (getline(ss, lectura, ','))
+            {
+                if (vuelo == lectura)
+                {
+                    return aux;
+                }
+            }
+
+            
+        }else{
+            if(vuelo == aux->getVuelo()){
+                cout << "solo un vuelo va a la ciudad " << aux->getCiudad() << endl;
+                return aux;
+            }
+        }
+    }
+    return nullptr; // si no encontro la ciudad 
+}
+
+int Matriz::cacheCiudad(string vuelo)
+{
+   Nodom *aux = root;
+    //cout << "buscando: " << vuelo << endl;
+    while (aux->getSiguiente() != nullptr)
+    {
+        aux = aux->getSiguiente();
+        //cout << "ciudad: ";
+        //cout << aux->getCiudad() << " vuelos : " << aux->getVuelo() << endl;
+        size_t found = aux->getVuelo().find(',');
+        if (found == 4)
+        {
+            
+            cout << "varias ciudades;" << endl;
+            string lectura;
+            stringstream ss(aux->getVuelo());
+            while (getline(ss, lectura, ','))
+            {
+                if (vuelo == lectura)
+                {
+                    return 1;
+                }
+            }
+
+            
+        }else{
+            if(vuelo == aux->getVuelo()){
+                //cout << "solo un vuelo va a la ciudad " << aux->getCiudad() << endl;
+                return 0;
+            }
+        }
+    }
+    return -1; // si no encontro la ciudad 
+}
+
+Nodom *Matriz::Eliminado(string vuelo){
+    Nodom *aux = root;
+    //cout << "buscando: " << vuelo << endl;
+    while (aux->getSiguiente() != nullptr)
+    {
+        aux = aux->getSiguiente();
+        Nodom *aux2 = aux;
+        while (aux2->getAbajo() != nullptr)
+        {
+            aux2 = aux2->getAbajo();
+            if (vuelo == aux2->getVuelo())
+            {
+                return aux2;
+            }
+        } 
+
+    }
+    return nullptr; // si no encontro la ciudad 
+}
+
+void Matriz::EliminarPiloto(string piloto)
+{
+    Nodom *ifila = root;
+
+    while(ifila->getAbajo() != nullptr){
+        ifila = ifila->getAbajo();
+        if(ifila->getDato() == piloto){
+            cout << "Fila encontrado" << endl;
+            break;
+        }
+    }
+
+    Nodom *jcolumna = regresarCE(ifila->getVuelo());
+
+
+    Nodom *eliminar = Eliminado(ifila->getVuelo());
+    int varios = cacheCiudad(ifila->getVuelo());
+
+
+    cout << "--------------------------------" << endl;
+    cout << "PROBANDO ACSESO A CABECERAS" << endl;
+    cout << "Fila: " << ifila->getVuelo() << endl;
+    cout << "Columna: " << jcolumna->getCiudad() << endl;
+    cout << "piloto: " << eliminar->getDato() << endl;
+    cout << "cache: " << varios << endl;
+    cout << "--------------------------------" << endl;
+    
+
+
+    if (ifila == nullptr)
+    {
+        cout << "No se encontro el piloto" << endl;
+        return;
+    }
+    else
+    {
+        if (varios == 0)
+        {
+            
+            //punteros evianto iFila que es la fila que se va
+
+            if(jcolumna->getSiguiente() == nullptr && ifila->getAbajo()==nullptr)
+            {
+                cout << "ambas orillas"<< endl;
+                //apuntar a null
+                Nodom *tempF = ifila->getArriba();
+                Nodom *tempC = jcolumna->getAnterior();
+
+                tempF->setAbajo(nullptr);
+                tempC->setSiguiente(nullptr);
+                
+
+                
+            }else if (jcolumna->getSiguiente() == nullptr && ifila->getAbajo() !=nullptr)
+            {
+               cout << "columna orilla" << endl;
+                Nodom *tempF = ifila->getArriba();
+                Nodom *tempC = jcolumna->getAnterior();
+
+                Nodom *puntF = ifila->getAbajo();
+                tempF->setAbajo(puntF);
+                puntF->setArriba(tempF);
+                tempC->setSiguiente(nullptr);
+              
+                
+              
+            }else if (jcolumna->getSiguiente() != nullptr && ifila->getAbajo() == nullptr)
+            {   
+                cout << "fila orilla" << endl;
+                Nodom *tempF = ifila->getArriba();
+                Nodom *tempC = jcolumna->getAnterior();
+
+                Nodom *puntC = jcolumna->getSiguiente();
+
+                tempC->setSiguiente(puntC);
+                puntC->setAnterior(tempC);
+
+                tempF->setAbajo(nullptr);
+
+                delete ifila;
+                delete jcolumna;
+              
+
+            }else if (jcolumna->getSiguiente() != nullptr && ifila->getAbajo() != nullptr){
+                cout << "ninguna orilla" << endl;
+                Nodom *tempF = ifila->getArriba();
+                Nodom *tempC = jcolumna->getAnterior();
+
+                Nodom *puntF = ifila->getAbajo();
+                Nodom *puntC = jcolumna->getSiguiente();
+
+                tempF->setAbajo(puntF);
+                puntF->setArriba(tempF);
+
+                tempC->setSiguiente(puntC);
+                puntC->setAnterior(tempC);
+
+                delete jcolumna;
+                delete ifila;
+
+            }
+
+            
+         }else if(varios == 1)
+         {
+           
+            Nodom *Recorrer = jcolumna;
+            string lectura;
+            int veces = 0;
+            stringstream ss(jcolumna->getVuelo());
+            cout << "ifila piloto: " << ifila->getDato()<< " vuelo: " << ifila->getVuelo() << endl;
+            while(getline(ss,lectura,',')){//para encontrar el piloto en la columna
+                Recorrer = Recorrer->getAbajo();
+                cout << "piloto: " << Recorrer->getDato()  << "vuelo: " << Recorrer->getVuelo()<< " Buscando a:" << eliminar->getVuelo() << " lectura: "<< lectura<< endl;
+                if(Recorrer->getVuelo() == eliminar->getVuelo()){
+                    break;
+                }
+            }
+           
+
+            if(Recorrer->getAbajo() != nullptr)
+            {
+                cout << "Caso 1 varios" << endl; 
+
+                Nodom *PilotoAntes = Recorrer->getArriba();
+                Nodom *PilotoDespues = Recorrer->getAbajo();
+
+                PilotoAntes->setAbajo(PilotoDespues);
+                PilotoDespues->setArriba(PilotoAntes);
+                if(ifila->getAbajo() == nullptr)
+                {
+                    cout << "fila orilla varios a misma ciudad" << endl;
+                    Nodom *tempF = ifila->getArriba();
+                    tempF->setAbajo(nullptr);
+
+                    delete ifila;
+                    delete Recorrer;
+                }else if(ifila->getAbajo() != nullptr)
+                {
+                    cout << "ninguna orilla varios a misma ciudad" << endl;
+                    Nodom *tempF = ifila->getArriba();
+                    Nodom *puntF = ifila->getAbajo();
+
+                    tempF->setAbajo(puntF);
+                    puntF->setArriba(tempF);
+                    delete ifila;
+                    delete Recorrer;
+                }
+
+            }else if (Recorrer->getAbajo() == nullptr)
+            {
+                cout << "Caso 2 varios" << endl;
+                cout << "piloto: " << Recorrer->getDato() << endl;
+
+                Nodom *pilotoArriba = Recorrer->getArriba();
+                
+                pilotoArriba->setAbajo(nullptr);
+
+                if(ifila->getAbajo()==nullptr)
+                {   
+                    cout << "fila orilla varios a misma ciudad" << endl;
+                    Nodom *tempF = ifila->getArriba();
+
+                    tempF->setAbajo(nullptr);
+                    delete ifila;
+
+                }else if(ifila->getAbajo() != nullptr)
+                {
+
+                    cout << "ninguna orilla varios a misma ciudad" << endl;
+                    Nodom *tempF = ifila->getArriba();
+                    Nodom *puntF = ifila->getAbajo();
+
+                    tempF->setAbajo(puntF);
+                    puntF->setArriba(tempF);
+                    delete ifila;
+                    delete Recorrer;
+                }
+                
+            }
+
+        }
+
+    }
+}
+
+void Matriz::ActualizarColumnas()
+{
+    Nodom *aux = root;
+    int conteo =1;
+    while (aux->getSiguiente() != nullptr)
+    {
+        aux = aux->getSiguiente();
+        aux->setColumna(conteo);
+        conteo++;
+    }
+}
+
+void Matriz::ActualizarFilas()
+{
+    Nodom *aux = root;
+    int conteo =1;
+    while (aux->getAbajo() != nullptr)
+    {
+        aux = aux->getAbajo();
+        aux->setFila(conteo);
+        conteo++;
+    }
+}
+
+int Matriz::RecorridoFilas(){
+    Nodom *aux = root;
+    int conteo =1;
+    while (aux->getAbajo() != nullptr)
+    {
+        aux = aux->getAbajo();
+        aux->setFila(conteo);
+        conteo++;
+    }
+    return conteo;
+}
+
+int Matriz::RecorridoColumnas(){
+    Nodom *aux = root;
+    int conteo = 1;
+    while (aux->getSiguiente() != nullptr)
+    {
+        aux = aux->getSiguiente();
+        aux->setColumna(conteo);
+        conteo++;
+    }
+    return conteo;
 }
 
 Nodom *Matriz::buscarPiloto(string piloto)
@@ -405,6 +686,11 @@ void Matriz::generarReporte()
     ofstream archivo("MatrizD.dot");
     if (archivo.is_open())
     {
+        
+        cout << "numero de filas: " << filas << " " << to_string(RecorridoFilas()) << endl;
+        cout << "numero de columnas: " << columnas << " " << to_string(RecorridoColumnas()) << endl;
+        this->columnas = RecorridoColumnas();
+        this->filas = RecorridoFilas();
         archivo << "digraph G {" << endl;
         archivo << "bgcolor=skyblue;" << endl;
         archivo << "fontcolor=white;" << endl;
@@ -427,6 +713,7 @@ void Matriz::generarReporte()
 
         // filas
         archivo << "/*------------Cabeceras Verticales------------*/" << endl;
+
         for (int i = 1; i < filas; i++)
         {
             if ((i + 1) == filas)
@@ -455,7 +742,7 @@ void Matriz::generarReporte()
             {
                 // recorremos la columna para abajo
                 aux2 = aux2->getAbajo();
-                archivo << "nodo" << aux2->getFila() << aux2->getColumna() << "[label=\"" << aux2->getDato() << " " << aux2->getFila() << "," << aux2->getColumna() << "\" group=" << i + 1 << "];" << endl;
+                archivo << "nodo" << aux2->getFila() << aux2->getColumna() << "[label=\"" << aux2->getDato() << "\" group=" << i + 1 << "];" << endl;
                 conteoNod++;
             }
 
@@ -496,24 +783,42 @@ void Matriz::generarReporte()
         conexion += " -> node0;";
         archivo << conexion << endl;
 
-        // conexion de nodos de la matriz horizontal
-        for (int i = 1; i < filas ; i++)
-        {
-            for (int j = 1; j < columnas ; j++)
-            {
+        // INTENTO SIN ALGORITMOS
 
-                cout <<"buscando piloto en: "<< i <<","<< j << " Hay: " << buscarPiloto2(i,j)<< endl;
-                if (buscarPiloto2(i, j))
+        Nodom *aux3 = root;
+        aux3 = aux3->getSiguiente();
+        int cache = 0;
+        string temp = "";
+
+        for (int i = 1; i < columnas; i++)
+        {
+            archivo << "/*------------columna enlace:" << i << "------------*/" << endl;
+
+            Nodom *aux2 = aux3;
+            // vemos que la columna no este vacia hacia abajo
+            while (aux2->getAbajo() != nullptr)
+            {
+                if (cache != 0)
                 {
-                    // cout << "piloto encontrado en: "<< i <<","<< j << endl;
-                    archivo << "nodo" << i << j << " -> node" << (i + (columnas - 1)) << ";" << endl;
-                    archivo << "node" << (i + (columnas - 1)) << " -> nodo" << i << j << ";" << endl;
+                    aux2 = aux2->getAbajo();
+                    archivo << "nodo" << aux2->getFila() << aux2->getColumna() << " -> " << temp << endl;
+                    archivo << temp << " -> nodo" << aux2->getFila() << aux2->getColumna() << endl;
+                    temp = "nodo" + to_string(aux2->getFila()) + to_string(aux2->getColumna());
                 }
-                else
+                else if (cache == 0)
                 {
-                    // cout << "piloto no encontrado en: "<< i <<","<< j << endl;
+
+                    // recorremos la columna para abajo
+                    aux2 = aux2->getAbajo();
+                    archivo << "nodo" << aux2->getFila() << aux2->getColumna() << " -> node" << i << endl;
+                    archivo << "node" << i << " -> nodo" << aux2->getFila() << aux2->getColumna() << endl;
+                    temp = "nodo" + to_string(aux2->getFila()) + to_string(aux2->getColumna());
+                    cache += 1;
                 }
             }
+            aux3 = aux3->getSiguiente();
+            cache = 0;
+            temp = "";
         }
 
         // cabeceras filas
@@ -550,16 +855,80 @@ void Matriz::generarReporte()
                 conexion += "node" + to_string(i + 1) + " -> node" + to_string(i) + " ";
             }
         }
+
+        // sin algoritmo para verticales
+
+        aux3 = root;
+        aux3 = aux3->getAbajo();
+        cache = 0;
+        temp = "";
+
+        for (int i = 1; i < filas; i++)
+        {
+            archivo << "/*------------Fila enlace:" << i << "------------*/" << endl;
+
+            Nodom *aux2 = aux3;
+            // vemos que la fila no este vacia hacia abajo
+            while (aux2->getSiguiente() != nullptr)
+            {
+                if (cache != 0)
+                {
+                    aux2 = aux2->getSiguiente();
+                    archivo << "nodo" << aux2->getFila() << aux2->getColumna() << " -> " << temp << endl;
+                    archivo << temp << " -> nodo" << aux2->getFila() << aux2->getColumna() << aux2->getColumna() << endl;
+                }
+                else if (cache == 0)
+                {
+
+                    // recorremos la columna para abajo
+                    aux2 = aux2->getSiguiente();
+                    archivo << "nodo" << aux2->getFila() << aux2->getColumna() << " -> node" << (i + columnas - 1) << endl;
+                    archivo << "node" << (i + columnas - 1) << " -> nodo" << aux2->getFila() << aux2->getColumna() << ";" << endl;
+
+                    temp = "nodo" + to_string(aux2->getFila()) + to_string(aux2->getColumna());
+                    cache += 1;
+                }
+            }
+            aux3 = aux3->getAbajo();
+            cache = 0;
+            temp = "";
+        }
+
         conexion += " -> node0;";
         archivo << conexion << endl;
         conexion = "";
-        archivo << "/*------------Encuadre-----------*/" << endl;
+        archivo << "/*------------Encuadre Columnas-----------*/" << endl;
         conexion += "{ rank=same; node0; ";
         for (int i = 1; i < columnas; i++)
         {
             conexion += "node" + to_string(i) + "; ";
         }
         archivo << conexion << "};" << endl;
+
+        conexion = "";
+
+        Nodom *recorrer = root;
+
+        for (int i = 1; i < filas; i++)
+        {
+            recorrer = recorrer->getAbajo();
+            archivo << "/*------------Encuadre Filas-----------*/" << endl;
+            conexion += "{ rank=same; node" + to_string(i + columnas - 1) + "; ";
+
+            Nodom *aux = recorrer;
+            while (aux->getSiguiente() != nullptr)
+            {
+                aux = aux->getSiguiente();
+                conexion += "nodo" + to_string(aux->getFila()) + to_string(aux->getColumna()) + "; ";
+            }
+
+            archivo << conexion << "};" << endl;
+            conexion = "";
+        }
+        archivo << "}";
+        archivo.close();
+        system("dot -Tpng MatrizD.dot -o MatrizD.png");
+        system("open MatrizD.png");
     }
 }
 

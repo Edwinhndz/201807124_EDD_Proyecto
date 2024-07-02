@@ -213,6 +213,7 @@ void Grafo::imprimirMatriz()
 
 void Grafo::generarReporte()
 {
+   
     if (getNumVertices() == 0) {} //Grafo vacío
     else{
         archivo.open("grafo.dot",ios::out);

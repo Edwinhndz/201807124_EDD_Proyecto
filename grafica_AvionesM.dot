@@ -8,10 +8,10 @@ nodo0[ shape=octagon, fontcolor=aliceblue , style=filled,color=teal, label="Regi
 Estado: Mantenimiento
 Vuelo:V700
 Modelo:Boeing 737"]
-nodo1[ shape=octagon, fontcolor=aliceblue , style=filled,color=teal, label="Registro: N70014
-Estado: Disponible
-Vuelo:0
-Modelo:0"]
+nodo1[ shape=octagon, fontcolor=aliceblue , style=filled,color=teal, label="Registro: N70015
+Estado: Mantenimiento
+Vuelo:V715
+Modelo:Boeing 777"]
 nodo0 -> nodo1;
 nodo1
 nodo1 -> nodo0;
