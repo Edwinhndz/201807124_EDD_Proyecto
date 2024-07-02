@@ -478,13 +478,23 @@ void Matriz::EliminarPiloto(string piloto)
             int veces = 0;
             stringstream ss(jcolumna->getVuelo());
             cout << "ifila piloto: " << ifila->getDato()<< " vuelo: " << ifila->getVuelo() << endl;
+
             while(getline(ss,lectura,',')){//para encontrar el piloto en la columna
                 Recorrer = Recorrer->getAbajo();
-                cout << "piloto: " << Recorrer->getDato()  << "vuelo: " << Recorrer->getVuelo()<< " Buscando a:" << eliminar->getVuelo() << " lectura: "<< lectura<< endl;
+                //cout << "piloto: " << Recorrer->getDato()  << "vuelo: " << Recorrer->getVuelo()<< " Buscando a:" << eliminar->getVuelo() << " lectura: "<< lectura<< endl;
                 if(Recorrer->getVuelo() == eliminar->getVuelo()){
                     break;
                 }
             }
+            
+            // Nodom *AX =jcolumna;
+            // while(AX->getAbajo() != nullptr){
+            //     AX = AX->getAbajo();
+            //     if(AX->getVuelo() == eliminar->getVuelo()){
+            //         cout<< "AQUI ES"<< endl;
+            //         break;
+            //     }
+            // }
            
 
             if(Recorrer->getAbajo() != nullptr)
