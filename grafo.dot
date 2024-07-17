@@ -13,8 +13,6 @@ Bilbao -> Sevilla [label="24"];
 Bilbao -> Granada [label="17"];
 Granada -> Girona [label="29"];
 Granada -> Murcia [label="9"];
-Granada -> Córdoba [label="16"];
 Murcia -> Girona [label="19"];
 Murcia -> Madrid [label="40"];
-Córdoba -> Bilbao [label="22"];
 }

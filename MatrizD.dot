@@ -8,163 +8,178 @@ node [shape=box width=1.2 style=filled fillcolor="#313638" fontcolor=white color
  edge [fontcolor=white color="#ff5400"];
 /*------------Cabeceras Horizontales------------*/
 node0 [label="Root" group=1];
-node1[label="Madrid" group=2];
-node2[label="Barcelona" group=3];
-node3[label="Sevilla" group=4];
-node4[label="Valencia" group=5];
-node5[label="Bilbao" group=6];
-node6[label="Zaragoza" group=7];
-node7[label="Granada" group=8];
-node8[label="Córdoba" group=9];
+node1[label="Barcelona" group=2];
+node2[label="Cuenca" group=3];
+node3[label="Donostia" group=4];
+node4[label="Girona" group=5];
+node5[label="Huesca" group=6];
+node6[label="Lleida" group=7];
+node7[label="Madrid" group=8];
+node8[label="Oviedo" group=9];
+node9[label="Pamplona" group=10];
+node10[label="Sevilla" group=11];
+node11[label="Toledo" group=12];
+node12[label="Valencia" group=13];
+node13[label="Zaragoza" group=14];
 /*------------Cabeceras Verticales------------*/
-node9[label="V714" group=1];
-node10[label="V713" group=1];
-node11[label="V712" group=1];
-node12[label="V711" group=1];
-node13[label="V710" group=1];
-node14[label="V709" group=1];
-node15[label="V708" group=1];
-node16[label="V707" group=1];
-node17[label="V706" group=1];
-node18[label="V705" group=1];
-node19[label="V704" group=1];
-node20[label="V703" group=1];
-node21[label="V702" group=1];
-node22[label="V701" group=1];
+node14[label="X101" group=1];
+node15[label="X102" group=1];
+node16[label="X103" group=1];
+node17[label="X104" group=1];
+node18[label="X105" group=1];
+node19[label="X106" group=1];
+node20[label="X107" group=1];
+node21[label="X109" group=1];
+node22[label="X110" group=1];
+node23[label="X111" group=1];
+node24[label="X112" group=1];
+node25[label="X113" group=1];
+node26[label="X114" group=1];
+node27[label="X116" group=1];
 /*------------columna 1------------*/
-nodo152[label="X06000123" group=2];
+nodo22[label="X20000123" group=2];
 /*------------columna 2------------*/
-nodo133[label="X04000123" group=3];
-nodo143[label="X05000123" group=3];
+nodo33[label="X30000123" group=3];
 /*------------columna 3------------*/
-nodo114[label="X02000123" group=4];
-nodo124[label="X03000123" group=4];
+nodo44[label="X40000123" group=4];
 /*------------columna 4------------*/
-nodo95[label="X90000123" group=5];
-nodo105[label="X01000123" group=5];
+nodo55[label="X50000123" group=5];
 /*------------columna 5------------*/
-nodo86[label="X80000123" group=6];
+nodo66[label="X60000123" group=6];
 /*------------columna 6------------*/
-nodo57[label="X50000123" group=7];
-nodo67[label="X60000123" group=7];
 nodo77[label="X70000123" group=7];
 /*------------columna 7------------*/
-nodo38[label="X30000123" group=8];
-nodo48[label="X40000123" group=8];
+nodo88[label="X80000123" group=8];
+nodo108[label="X01000123" group=8];
 /*------------columna 8------------*/
-nodo29[label="X20000123" group=9];
+nodo119[label="X02000123" group=9];
+/*------------columna 9------------*/
+nodo1210[label="X03000123" group=10];
+/*------------columna 10------------*/
+nodo1311[label="X04000123" group=11];
+/*------------columna 11------------*/
+nodo1412[label="X05000123" group=12];
+/*------------columna 12------------*/
+nodo1513[label="X06000123" group=13];
+/*------------columna 13------------*/
+nodo1714[label="X07000123" group=14];
 /*------------Relaciones Horizontales------------*/
-node0 -> node1  node1 -> node2  node2 -> node3  node3 -> node4  node4 -> node5  node5 -> node6  node6 -> node7  node7 -> node8 ;
-node8 -> node7 node7 -> node6 node6 -> node5 node5 -> node4 node4 -> node3 node3 -> node2 node2 -> node1  -> node0;
+node0 -> node1  node1 -> node2  node2 -> node3  node3 -> node4  node4 -> node5  node5 -> node6  node6 -> node7  node7 -> node8  node8 -> node9  node9 -> node10  node10 -> node11  node11 -> node12  node12 -> node13 ;
+node13 -> node12 node12 -> node11 node11 -> node10 node10 -> node9 node9 -> node8 node8 -> node7 node7 -> node6 node6 -> node5 node5 -> node4 node4 -> node3 node3 -> node2 node2 -> node1  -> node0;
 /*------------columna enlace:1------------*/
-nodo152 -> node1
-node1 -> nodo152
+nodo22 -> node1
+node1 -> nodo22
 /*------------columna enlace:2------------*/
-nodo133 -> node2
-node2 -> nodo133
-nodo143 -> nodo133
-nodo133 -> nodo143
+nodo33 -> node2
+node2 -> nodo33
 /*------------columna enlace:3------------*/
-nodo114 -> node3
-node3 -> nodo114
-nodo124 -> nodo114
-nodo114 -> nodo124
+nodo44 -> node3
+node3 -> nodo44
 /*------------columna enlace:4------------*/
-nodo95 -> node4
-node4 -> nodo95
-nodo105 -> nodo95
-nodo95 -> nodo105
+nodo55 -> node4
+node4 -> nodo55
 /*------------columna enlace:5------------*/
-nodo86 -> node5
-node5 -> nodo86
+nodo66 -> node5
+node5 -> nodo66
 /*------------columna enlace:6------------*/
-nodo57 -> node6
-node6 -> nodo57
-nodo67 -> nodo57
-nodo57 -> nodo67
-nodo77 -> nodo67
-nodo67 -> nodo77
+nodo77 -> node6
+node6 -> nodo77
 /*------------columna enlace:7------------*/
-nodo38 -> node7
-node7 -> nodo38
-nodo48 -> nodo38
-nodo38 -> nodo48
+nodo88 -> node7
+node7 -> nodo88
+nodo108 -> nodo88
+nodo88 -> nodo108
 /*------------columna enlace:8------------*/
-nodo29 -> node8
-node8 -> nodo29
+nodo119 -> node8
+node8 -> nodo119
+/*------------columna enlace:9------------*/
+nodo1210 -> node9
+node9 -> nodo1210
+/*------------columna enlace:10------------*/
+nodo1311 -> node10
+node10 -> nodo1311
+/*------------columna enlace:11------------*/
+nodo1412 -> node11
+node11 -> nodo1412
+/*------------columna enlace:12------------*/
+nodo1513 -> node12
+node12 -> nodo1513
+/*------------columna enlace:13------------*/
+nodo1714 -> node13
+node13 -> nodo1714
 /*------------Relaciones Verticales------------*/
-node0 -> node9  node9 -> node10  node10 -> node11  node11 -> node12  node12 -> node13  node13 -> node14  node14 -> node15  node15 -> node16  node16 -> node17  node17 -> node18  node18 -> node19  node19 -> node20  node20 -> node21  -> node22;
+node0 -> node14  node14 -> node15  node15 -> node16  node16 -> node17  node17 -> node18  node18 -> node19  node19 -> node20  node20 -> node21  node21 -> node22  node22 -> node23  node23 -> node24  node24 -> node25  node25 -> node26  -> node27;
 /*------------Fila enlace:1------------*/
-nodo29 -> node9
-node9 -> nodo29;
+nodo22 -> node14
+node14 -> nodo22;
 /*------------Fila enlace:2------------*/
-nodo38 -> node10
-node10 -> nodo38;
+nodo33 -> node15
+node15 -> nodo33;
 /*------------Fila enlace:3------------*/
-nodo48 -> node11
-node11 -> nodo48;
+nodo44 -> node16
+node16 -> nodo44;
 /*------------Fila enlace:4------------*/
-nodo57 -> node12
-node12 -> nodo57;
+nodo55 -> node17
+node17 -> nodo55;
 /*------------Fila enlace:5------------*/
-nodo67 -> node13
-node13 -> nodo67;
+nodo66 -> node18
+node18 -> nodo66;
 /*------------Fila enlace:6------------*/
-nodo77 -> node14
-node14 -> nodo77;
+nodo77 -> node19
+node19 -> nodo77;
 /*------------Fila enlace:7------------*/
-nodo86 -> node15
-node15 -> nodo86;
+nodo88 -> node20
+node20 -> nodo88;
 /*------------Fila enlace:8------------*/
-nodo95 -> node16
-node16 -> nodo95;
+nodo108 -> node21
+node21 -> nodo108;
 /*------------Fila enlace:9------------*/
-nodo105 -> node17
-node17 -> nodo105;
+nodo119 -> node22
+node22 -> nodo119;
 /*------------Fila enlace:10------------*/
-nodo114 -> node18
-node18 -> nodo114;
+nodo1210 -> node23
+node23 -> nodo1210;
 /*------------Fila enlace:11------------*/
-nodo124 -> node19
-node19 -> nodo124;
+nodo1311 -> node24
+node24 -> nodo1311;
 /*------------Fila enlace:12------------*/
-nodo133 -> node20
-node20 -> nodo133;
+nodo1412 -> node25
+node25 -> nodo1412;
 /*------------Fila enlace:13------------*/
-nodo143 -> node21
-node21 -> nodo143;
+nodo1513 -> node26
+node26 -> nodo1513;
 /*------------Fila enlace:14------------*/
-nodo152 -> node22
-node22 -> nodo152;
-node22 -> node21 node21 -> node20 node20 -> node19 node19 -> node18 node18 -> node17 node17 -> node16 node16 -> node15 node15 -> node14 node14 -> node13 node13 -> node12 node12 -> node11 node11 -> node10 node10 -> node9  -> node0;
+nodo1714 -> node27
+node27 -> nodo1714;
+node27 -> node26 node26 -> node25 node25 -> node24 node24 -> node23 node23 -> node22 node22 -> node21 node21 -> node20 node20 -> node19 node19 -> node18 node18 -> node17 node17 -> node16 node16 -> node15 node15 -> node14  -> node0;
 /*------------Encuadre Columnas-----------*/
-{ rank=same; node0; node1; node2; node3; node4; node5; node6; node7; node8; };
+{ rank=same; node0; node1; node2; node3; node4; node5; node6; node7; node8; node9; node10; node11; node12; node13; };
 /*------------Encuadre Filas-----------*/
-{ rank=same; node9; nodo29; };
+{ rank=same; node14; nodo22; };
 /*------------Encuadre Filas-----------*/
-{ rank=same; node10; nodo38; };
+{ rank=same; node15; nodo33; };
 /*------------Encuadre Filas-----------*/
-{ rank=same; node11; nodo48; };
+{ rank=same; node16; nodo44; };
 /*------------Encuadre Filas-----------*/
-{ rank=same; node12; nodo57; };
+{ rank=same; node17; nodo55; };
 /*------------Encuadre Filas-----------*/
-{ rank=same; node13; nodo67; };
+{ rank=same; node18; nodo66; };
 /*------------Encuadre Filas-----------*/
-{ rank=same; node14; nodo77; };
+{ rank=same; node19; nodo77; };
 /*------------Encuadre Filas-----------*/
-{ rank=same; node15; nodo86; };
+{ rank=same; node20; nodo88; };
 /*------------Encuadre Filas-----------*/
-{ rank=same; node16; nodo95; };
+{ rank=same; node21; nodo108; };
 /*------------Encuadre Filas-----------*/
-{ rank=same; node17; nodo105; };
+{ rank=same; node22; nodo119; };
 /*------------Encuadre Filas-----------*/
-{ rank=same; node18; nodo114; };
+{ rank=same; node23; nodo1210; };
 /*------------Encuadre Filas-----------*/
-{ rank=same; node19; nodo124; };
+{ rank=same; node24; nodo1311; };
 /*------------Encuadre Filas-----------*/
-{ rank=same; node20; nodo133; };
+{ rank=same; node25; nodo1412; };
 /*------------Encuadre Filas-----------*/
-{ rank=same; node21; nodo143; };
+{ rank=same; node26; nodo1513; };
 /*------------Encuadre Filas-----------*/
-{ rank=same; node22; nodo152; };
+{ rank=same; node27; nodo1714; };
 }
